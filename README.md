@@ -1,5 +1,5 @@
 <p align="center">
-    <!-- <img width="500" height="500" src="https://i.imgur.com/byExR3k.jpeg"> -->
+    <img width="500" height="500" src="https://i.imgur.com/byExR3k.jpeg">
 </p>
 
 <div align="center">
@@ -10,7 +10,7 @@
    
 # What is Computronium
 
-#### **Computronium** is a fully-featured **[discord bot](https://discord.com/developers/docs/intro#bots-and-apps)** *discord bot* written in [Typescript](https://www.typescriptlang.org/), intended to provide hades star discord helping features that are easy to use, extend and modify.
+#### **Computronium** is a fully-featured **[discord bot](https://discord.com/developers/docs/intro#bots-and-apps)** written in [Typescript](https://www.typescriptlang.org/), intended to provide hades star discord helping features that are easy to use, extend and modify.
 
 It uses [`discord.ts`](https://github.com/oceanroleplay/discord.ts) and [`discord.js v14`](https://github.com/discordjs/discord.js). A bot for the hade's star community
 
@@ -39,17 +39,13 @@ This template was created to give developers a starting point for new Discord bo
 ### Dashboard
 
 **A ready-to-use fancy dashboard for your bot!**
-
-<img src="https://user-images.githubusercontent.com/66025667/191989444-5fa096ec-c74e-423d-9735-615b94bc100f.png">
-
+    
 </td>
 <td align="center">
 
 ### Website
 
 **Static front homepage for the bot!**
-
-https://user-images.githubusercontent.com/66025667/184621486-7340157f-b7fc-44ea-94a9-03d76a99384c.mp4
 
 </td>
 </tr>
@@ -59,9 +55,7 @@ https://user-images.githubusercontent.com/66025667/184621486-7340157f-b7fc-44ea-
 
 ### CLI
 
-**A really useful CLI meant to initialize a new Computronium project, generate files by type or even manage plugins!**
-
-https://user-images.githubusercontent.com/66025667/196367258-94c77e23-779c-4d9b-8583-a29226435b07.mp4
+**A really useful CLI meant to initialize a new project, generate files by type or even manage plugins!**
 
 </td>
 <td align="center">
