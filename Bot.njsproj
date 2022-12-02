@@ -1,0 +1,231 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <Name>Bot</Name>
+    <RootNamespace>Bot</RootNamespace>
+    <Environment>TOKEN=MTA0Njc1MjIwMjIyNTYzMTI5NA.GPNQDW.49rN-YNZVD9fpQdtaWSWqISDnVcgXqQn41V1eQ</Environment>
+    <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
+    <EnableTypeScript>true</EnableTypeScript>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>2a0112e9-c57c-4930-87f0-7e4a47455ed2</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>build/main.js</StartupFile>
+    <StartWebBrowser>False</StartWebBrowser>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <StartWebBrowser>False</StartWebBrowser>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include=".eslintrc.json" />
+    <Content Include=".docker\app\Dockerfile" />
+    <Content Include=".env" />
+    <Content Include=".gitignore" />
+    <Content Include=".swcrc" />
+    <Content Include=".typesafe-i18n.json" />
+    <Content Include="assets\images\.gitkeep" />
+    <Content Include="assets\images\tscord-template-icon.png" />
+    <Content Include="database\backups\.gitkeep" />
+    <Content Include="database\migrations\.gitkeep" />
+    <Content Include="docker-compose.yml" />
+    <Content Include="EC2_KeyPair_Src.pem" />
+    <Content Include="LICENSE" />
+    <Content Include="package-lock.json" />
+    <Content Include="package.json">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="pm2.config.json" />
+    <Content Include="README.md" />
+    <Content Include="src\plugins\.gitkeep" />
+    <Content Include="tsconfig.json" />
+    <Content Include="imgur_cred.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include=".docker\" />
+    <Folder Include=".docker\app\" />
+    <Folder Include="assets\" />
+    <Folder Include="assets\images\" />
+    <Folder Include="database\" />
+    <Folder Include="database\backups\" />
+    <Folder Include="database\migrations\" />
+    <Folder Include="src\" />
+    <Folder Include="src\api\" />
+    <Folder Include="src\api\controllers\" />
+    <Folder Include="src\api\middlewares\" />
+    <Folder Include="src\commands\" />
+    <Folder Include="src\commands\Admin\" />
+    <Folder Include="src\commands\General\" />
+    <Folder Include="src\commands\Messages\" />
+    <Folder Include="src\commands\Music\" />
+    <Folder Include="src\commands\Channel\" />
+    <Folder Include="src\commands\Embed\" />
+    <Folder Include="src\commands\Owner\" />
+    <Folder Include="src\config\" />
+    <Folder Include="src\entities\" />
+    <Folder Include="src\events\" />
+    <Folder Include="src\events\custom\" />
+    <Folder Include="src\guards\" />
+    <Folder Include="src\i18n\" />
+    <Folder Include="src\i18n\en\" />
+    <Folder Include="src\i18n\fr\" />
+    <Folder Include="src\plugins\" />
+    <Folder Include="src\services\" />
+    <Folder Include="src\utils\" />
+    <Folder Include="src\utils\classes\" />
+    <Folder Include="src\utils\decorators\" />
+    <Folder Include="src\utils\errors\" />
+    <Folder Include="src\utils\functions\" />
+    <Folder Include="src\utils\types\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="mikro-orm.config.ts" />
+    <TypeScriptCompile Include="src\api\controllers\bot.ts" />
+    <TypeScriptCompile Include="src\api\controllers\database.ts" />
+    <TypeScriptCompile Include="src\api\controllers\health.ts" />
+    <TypeScriptCompile Include="src\api\controllers\index.ts" />
+    <TypeScriptCompile Include="src\api\controllers\other.ts" />
+    <TypeScriptCompile Include="src\api\controllers\stats.ts" />
+    <TypeScriptCompile Include="src\api\middlewares\authenticated.ts" />
+    <TypeScriptCompile Include="src\api\middlewares\botOnline.ts" />
+    <TypeScriptCompile Include="src\api\middlewares\index.ts" />
+    <TypeScriptCompile Include="src\api\middlewares\log.ts" />
+    <TypeScriptCompile Include="src\api\server.ts" />
+    <TypeScriptCompile Include="src\client.ts" />
+    <TypeScriptCompile Include="src\commands\Admin\prefix.ts" />
+    <TypeScriptCompile Include="src\commands\General\help.ts" />
+    <TypeScriptCompile Include="src\commands\General\info.ts" />
+    <TypeScriptCompile Include="src\commands\General\invite.ts" />
+    <TypeScriptCompile Include="src\commands\Embed\embed.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\commands\Messages\message.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\commands\Music\music.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\commands\General\ping.ts" />
+    <TypeScriptCompile Include="src\commands\General\stats.ts" />
+    <TypeScriptCompile Include="src\commands\Owner\maintenance.ts" />
+    <TypeScriptCompile Include="src\config\api.ts" />
+    <TypeScriptCompile Include="src\config\database.ts" />
+    <TypeScriptCompile Include="src\config\general.ts" />
+    <TypeScriptCompile Include="src\config\index.ts" />
+    <TypeScriptCompile Include="src\config\logs.ts" />
+    <TypeScriptCompile Include="src\config\stats.ts" />
+    <TypeScriptCompile Include="src\config\websocket.ts" />
+    <TypeScriptCompile Include="src\entities\BaseEntity.ts" />
+    <TypeScriptCompile Include="src\entities\Data.ts" />
+    <TypeScriptCompile Include="src\entities\Guild.ts" />
+    <TypeScriptCompile Include="src\entities\Image.ts" />
+    <TypeScriptCompile Include="src\entities\index.ts" />
+    <TypeScriptCompile Include="src\entities\Pastebin.ts" />
+    <TypeScriptCompile Include="src\entities\Stat.ts" />
+    <TypeScriptCompile Include="src\entities\User.ts" />
+    <TypeScriptCompile Include="src\events\custom\guildAdmin.ts" />
+    <TypeScriptCompile Include="src\events\custom\simpleCommandCreate.ts" />
+    <TypeScriptCompile Include="src\events\guildCreate.ts" />
+    <TypeScriptCompile Include="src\events\guildDelete.ts" />
+    <TypeScriptCompile Include="src\events\interactionCreate.ts" />
+    <TypeScriptCompile Include="src\events\messageCreate.ts" />
+    <TypeScriptCompile Include="src\events\messagePinned.ts" />
+    <TypeScriptCompile Include="src\events\ready.ts" />
+    <TypeScriptCompile Include="src\guards\disabled.ts" />
+    <TypeScriptCompile Include="src\guards\extractLocale.ts" />
+    <TypeScriptCompile Include="src\guards\guildOnly.ts" />
+    <TypeScriptCompile Include="src\guards\index.ts" />
+    <TypeScriptCompile Include="src\guards\maintenance.ts" />
+    <TypeScriptCompile Include="src\guards\match.ts" />
+    <TypeScriptCompile Include="src\guards\notBot.ts" />
+    <TypeScriptCompile Include="src\guards\nsfw.ts" />
+    <TypeScriptCompile Include="src\i18n\detectors.ts" />
+    <TypeScriptCompile Include="src\i18n\en\index.ts" />
+    <TypeScriptCompile Include="src\i18n\formatters.ts" />
+    <TypeScriptCompile Include="src\i18n\fr\index.ts" />
+    <TypeScriptCompile Include="src\i18n\i18n-node.ts" />
+    <TypeScriptCompile Include="src\i18n\i18n-types.ts" />
+    <TypeScriptCompile Include="src\i18n\i18n-util.async.ts" />
+    <TypeScriptCompile Include="src\i18n\i18n-util.sync.ts" />
+    <TypeScriptCompile Include="src\i18n\i18n-util.ts" />
+    <TypeScriptCompile Include="src\i18n\index.ts" />
+    <TypeScriptCompile Include="src\main.ts" />
+    <TypeScriptCompile Include="src\services\Database.ts" />
+    <TypeScriptCompile Include="src\services\ErrorHandler.ts" />
+    <TypeScriptCompile Include="src\services\ImagesUpload.ts" />
+    <TypeScriptCompile Include="src\services\index.ts" />
+    <TypeScriptCompile Include="src\services\Logger.ts" />
+    <TypeScriptCompile Include="src\services\Pastebin.ts" />
+    <TypeScriptCompile Include="src\services\PluginsManager.ts" />
+    <TypeScriptCompile Include="src\services\Scheduler.ts" />
+    <TypeScriptCompile Include="src\services\Stats.ts" />
+    <TypeScriptCompile Include="src\services\Store.ts" />
+    <TypeScriptCompile Include="src\services\WebSocket.ts" />
+    <TypeScriptCompile Include="src\utils\classes\BaseController.ts" />
+    <TypeScriptCompile Include="src\utils\classes\BaseError.ts" />
+    <TypeScriptCompile Include="src\utils\classes\index.ts" />
+    <TypeScriptCompile Include="src\utils\classes\Plugin.ts" />
+    <TypeScriptCompile Include="src\utils\decorators\ContextMenu.ts" />
+    <TypeScriptCompile Include="src\utils\decorators\index.ts" />
+    <TypeScriptCompile Include="src\utils\decorators\On.ts" />
+    <TypeScriptCompile Include="src\utils\decorators\Once.ts" />
+    <TypeScriptCompile Include="src\utils\decorators\Schedule.ts" />
+    <TypeScriptCompile Include="src\utils\decorators\Slash.ts" />
+    <TypeScriptCompile Include="src\utils\decorators\SlashChoice.ts" />
+    <TypeScriptCompile Include="src\utils\decorators\SlashGroup.ts" />
+    <TypeScriptCompile Include="src\utils\decorators\SlashModal.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\utils\decorators\SlashOption.ts" />
+    <TypeScriptCompile Include="src\utils\decorators\WSOn.ts" />
+    <TypeScriptCompile Include="src\utils\errors\index.ts" />
+    <TypeScriptCompile Include="src\utils\errors\InvalidOptionName.ts" />
+    <TypeScriptCompile Include="src\utils\errors\NoBotToken.ts" />
+    <TypeScriptCompile Include="src\utils\errors\UnknownReply.ts" />
+    <TypeScriptCompile Include="src\utils\functions\array.ts" />
+    <TypeScriptCompile Include="src\utils\functions\colors.ts" />
+    <TypeScriptCompile Include="src\utils\functions\converter.ts" />
+    <TypeScriptCompile Include="src\utils\functions\database.ts" />
+    <TypeScriptCompile Include="src\utils\functions\date.ts" />
+    <TypeScriptCompile Include="src\utils\functions\dependency.ts" />
+    <TypeScriptCompile Include="src\utils\functions\devs.ts" />
+    <TypeScriptCompile Include="src\utils\functions\embeds.ts" />
+    <TypeScriptCompile Include="src\utils\functions\error.ts" />
+    <TypeScriptCompile Include="src\utils\functions\eval.ts" />
+    <TypeScriptCompile Include="src\utils\functions\files.ts" />
+    <TypeScriptCompile Include="src\utils\functions\image.ts" />
+    <TypeScriptCompile Include="src\utils\functions\index.ts" />
+    <TypeScriptCompile Include="src\utils\functions\interactions.ts" />
+    <TypeScriptCompile Include="src\utils\functions\localization.ts" />
+    <TypeScriptCompile Include="src\utils\functions\maintenance.ts" />
+    <TypeScriptCompile Include="src\utils\functions\prefix.ts" />
+    <TypeScriptCompile Include="src\utils\functions\resolvers.ts" />
+    <TypeScriptCompile Include="src\utils\functions\string.ts" />
+    <TypeScriptCompile Include="src\utils\functions\synchronizer.ts" />
+    <TypeScriptCompile Include="src\utils\types\configs.d.ts" />
+    <TypeScriptCompile Include="src\utils\types\database.d.ts" />
+    <TypeScriptCompile Include="src\utils\types\environment.d.ts" />
+    <TypeScriptCompile Include="src\utils\types\interactions.d.ts" />
+    <TypeScriptCompile Include="src\utils\types\localization.d.ts" />
+    <TypeScriptCompile Include="src\utils\types\state.d.ts" />
+    <TypeScriptCompile Include="src\utils\types\stats.d.ts" />
+    <TypeScriptCompile Include="src\utils\types\utils.d.ts" />
+    <TypeScriptCompile Include="src\utils\types\websocket.d.ts" />
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
+</Project>

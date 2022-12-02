@@ -1,0 +1,29 @@
+# npm
+node_modules/
+
+# secrets
+.env
+.env.local
+imgur_cred.txt
+EC2_KeyPair_Src.pem
+
+# build
+build/
+
+# db
+*.sqlite
+objects/
+snapshot*.txt
+/data/
+
+# logs
+logs/
+*.log
+
+# other
+tests/
+obj/
+logs/
+.vs/
+bin/
+/Bot.njsproj.user
