@@ -35,7 +35,6 @@ This template was created to give developers a starting point for new Discord bo
 <table>
 <tr>
 <td align="center" width="50%">
-
 ### Dashboard
 
 **A ready-to-use fancy dashboard for your bot!**
