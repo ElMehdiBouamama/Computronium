@@ -12,7 +12,7 @@ export const generalConfig: GeneralConfigType = {
 
 	// useful links
 	links: {
-		invite: 'https://discord.com/api/oauth2/authorize?client_id=1046752202225631294&permissions=8&scope=bot',
+		invite: 'https://discord.com/api/oauth2/authorize?client_id=1048576181978542111&permissions=8&scope=bot',
 		supportServer: 'https://discord.gg/5zdYh8D28n',
 		gitRemoteRepo: 'https://github.com/barthofu/tscord',
 	},

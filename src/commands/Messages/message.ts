@@ -1,5 +1,5 @@
 import { Category } from "@discordx/utilities"
-import { ApplicationCommandOptionType, CommandInteraction, TextBasedChannel } from "discord.js"
+import { ApplicationCommandOptionType, CommandInteraction, TextBasedChannel, TextChannel } from "discord.js"
 import { Client } from "discordx"
 
 import { Discord, Slash, SlashGroup, SlashOption } from "@decorators"
@@ -8,8 +8,8 @@ import { simpleSuccessEmbed } from "@utils/functions"
 
 @Discord()
 @Category('Messages')
-@SlashGroup({ name: 'message', description: 'Manage messages in channels' })
-@SlashGroup('message')
+@SlashGroup({ name: 'messages', description: 'Manage messages in channels' })
+@SlashGroup('messages')
 export default class MessageCommand {
 
     @Slash({
@@ -42,7 +42,11 @@ export default class MessageCommand {
 
         const msgs = await channel?.messages.fetch({ limit: count, before: interaction.id });
         if (msgs) {
-            await msgs.forEach(x => { x.delete() });
+            if (count < 2) {
+                await msgs.forEach(x => { x.delete() });
+            } else {
+                (channel as TextChannel).bulkDelete(msgs);
+            }
         }
 
         await simpleSuccessEmbed(

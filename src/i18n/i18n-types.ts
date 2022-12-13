@@ -163,23 +163,6 @@ type RootTranslation = {
 			 */
 			MESSAGE: RequiredParams<'heartbeat' | 'member' | 'time'>
 		}
-		MUSIC: {
-			/**
-			 * P​l​a​y​ ​y​o​u​r​ ​m​u​s​i​c​ ​i​n​ ​v​o​i​c​e​ ​c​h​a​n​n​e​l​s​.
-			 */
-			DESCRIPTION: string
-			SELECT_MENU: {
-				/**
-				 * S​e​l​e​c​t​ ​a​ ​s​o​n​g
-				 */
-				TITLE: string
-				/**
-				 * {​n​a​m​e​}
-				 * @param {string} name
-				 */
-				SONG_DESCRIPTION: RequiredParams<'name'>
-			}
-		}
 	}
 }
 
@@ -324,22 +307,6 @@ export type TranslationFunctions = {
 			 * {member} Pong! The message round-trip took {time}ms.{heartbeat}
 			 */
 			MESSAGE: (arg: { heartbeat: string, member: string, time: number }) => LocalizedString
-		}
-		MUSIC: {
-			/**
-			 * Play your music in voice channels.
-			 */
-			DESCRIPTION: () => LocalizedString
-			SELECT_MENU: {
-				/**
-				 * Select a song
-				 */
-				TITLE: () => LocalizedString
-				/**
-				 * {name}
-				 */
-				SONG_DESCRIPTION: (arg: { name: string }) => LocalizedString
-			}
 		}
 	}
 }

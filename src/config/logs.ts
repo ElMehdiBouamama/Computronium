@@ -10,7 +10,7 @@ export const logsConfig: LogsConfigType = {
     interaction: {
         file: true,
         console: true,
-        channel: null,
+        channel: "1037789153473073243",
 
         // exclude some interactions types
         exclude: [
@@ -28,13 +28,13 @@ export const logsConfig: LogsConfigType = {
     newUser: {
         file: true,
         console: true,
-        channel: null
+        channel: "1037758796006690837"
     },
 
     guild: {
         file: true,
         console: true,
-        channel: null
+        channel: "1037789153473073243"
     },
     
     error: {

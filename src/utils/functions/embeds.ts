@@ -1,4 +1,4 @@
-import { CommandInteraction, EmbedBuilder } from "discord.js"
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, CommandInteraction, EmbedBuilder, MessageActionRowComponentBuilder, ModalSubmitInteraction } from "discord.js"
 
 import { replyToInteraction } from "@utils/functions"
 /**
@@ -6,13 +6,14 @@ import { replyToInteraction } from "@utils/functions"
  * @param interaction - discord interaction
  * @param message - message to log
  */
-export const simpleSuccessEmbed = (interaction: CommandInteraction, message: string) => {
+export const simpleSuccessEmbed = async (interaction: CommandInteraction | ModalSubmitInteraction, message: string) => {
 
     const embed = new EmbedBuilder()
-        .setColor(0x57f287) // GREEN // see: https://github.com/discordjs/discord.js/blob/main/packages/discord.js/src/util/Colors.js
-        .setTitle(`✅ ${message}`)
+        .setColor(Colors.Green) // GREEN
+        .setTitle(`✅ Success`)
+        .setDescription(`${message}`)
 
-    replyToInteraction(interaction, { embeds: [embed] })
+    await replyToInteraction(interaction, { embeds: [embed] })
 }
 
 /**
@@ -20,11 +21,42 @@ export const simpleSuccessEmbed = (interaction: CommandInteraction, message: str
  * @param interaction - discord interaction
  * @param message - message to log
  */
-export const simpleErrorEmbed = (interaction: CommandInteraction, message: string) => {
+export const simpleErrorEmbed = async (interaction: CommandInteraction | ModalSubmitInteraction, message: string) => {
 
     const embed = new EmbedBuilder()
-        .setColor(0xed4245) // RED // see: https://github.com/discordjs/discord.js/blob/main/packages/discord.js/src/util/Colors.js
-        .setTitle(`❌ ${message}`)
+        .setColor(Colors.Red) // RED
+        .setTitle(`❌ Error`)
+        .setDescription(`${message}`)
 
-    replyToInteraction(interaction, { embeds: [embed] })
+    await replyToInteraction(interaction, { embeds: [embed] })
+}
+
+
+/**
+ * Send a simple question embed with two buttons
+ * @param interaction - discord interaction
+ * @param message - message to log
+ * */
+
+export const simpleQuestionEmbed = async (interaction: CommandInteraction, message: string, labels: string[]) => {
+
+    const embed = new EmbedBuilder()
+        .setColor(Colors.Orange)
+        .setTitle(`:warning: Are you sure?`)
+        .setDescription(message);
+
+    const buttonsRow = new ActionRowBuilder<MessageActionRowComponentBuilder>()
+        .addComponents(
+            new ButtonBuilder()
+                .setCustomId(labels[0])
+                .setLabel(labels[0])
+                .setStyle(ButtonStyle.Success),
+        ).addComponents(
+            new ButtonBuilder()
+                .setCustomId(labels[1])
+                .setLabel(labels[1])
+                .setStyle(ButtonStyle.Danger),
+        );
+
+    await replyToInteraction(interaction, { ephemeral: true, embeds: [embed], components: [buttonsRow] });
 }

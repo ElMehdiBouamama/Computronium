@@ -62,13 +62,6 @@ const en: BaseTranslation = {
 			DESCRIPTION: 'Pong!',
 			MESSAGE: '{member:string} Pong! The message round-trip took {time:number}ms.{heartbeat:string}',
 		},
-		MUSIC: {
-			DESCRIPTION: 'Play your music in voice channels.',
-			SELECT_MENU: {
-				TITLE: 'Select a song',
-				SONG_DESCRIPTION: '{name:string}',
-			},
-		},
 	},
 }
 

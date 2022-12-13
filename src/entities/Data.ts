@@ -1,16 +1,18 @@
 import { Entity, EntityRepositoryType, PrimaryKey, Property } from "@mikro-orm/core"
 import { EntityRepository } from "@mikro-orm/sqlite"
+import { BaseJoinToCreate } from "../utils/classes/BaseJoinToCreate"
 
 import { CustomBaseEntity } from "./BaseEntity"
 
 /**
  * Default data for the Data table (dynamic EAV key/value pattern) 
  */
- export const defaultData = {
+export const defaultData = {
 
     maintenance: false,
     lastMaintenance: Date.now(),
-    lastStartup: Date.now()
+    lastStartup: Date.now(),
+    joinToCreate: [] as BaseJoinToCreate[]
 }
 
 type DataType = keyof typeof defaultData
@@ -25,7 +27,7 @@ export class Data extends CustomBaseEntity {
     [EntityRepositoryType]?: DataRepository
 
     @PrimaryKey()
-    key!: string 
+    key!: string
 
     @Property()
     value: string = ''

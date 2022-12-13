@@ -1,4 +1,4 @@
-import { CommandInteraction, InteractionType } from "discord.js"
+import { CommandInteraction } from "discord.js"
 import { ArgsOf, Client } from "discordx"
 import { injectable } from "tsyringe"
 
@@ -6,7 +6,8 @@ import { Discord, Guard, On } from "@decorators"
 import { Guild, User } from "@entities"
 import { Maintenance } from "@guards"
 import { Database, Logger, Stats } from "@services"
-import { syncUser } from "@utils/functions"
+import { resolveAction, syncUser } from "@utils/functions"
+import { modalConfig } from "../config"
 
 @Discord()
 @injectable()
@@ -27,7 +28,12 @@ export default class InteractionCreateEvent {
         client: Client
     ) {
         // defer the reply
-        if (interaction instanceof CommandInteraction) await interaction.deferReply()
+        if (interaction instanceof CommandInteraction) {
+            const action = resolveAction(interaction);
+            if (!modalConfig.commands.exclude.includes(action)) {
+                await interaction.deferReply()
+            }
+        }
 
         // insert user in db if not exists
         await syncUser(interaction.user)
