@@ -26,7 +26,7 @@ export class Data extends CustomBaseEntity {
 
     [EntityRepositoryType]?: DataRepository
 
-    @PrimaryKey()
+    @PrimaryKey({ nullable: false, type: 'string' })
     key!: string
 
     @Property()
