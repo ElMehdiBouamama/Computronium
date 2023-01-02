@@ -1,6 +1,6 @@
 import type {
     VoiceServerUpdate,
-    VoiceStateUpdate,
+    VoiceStateUpdate
 } from "@discordx/lava-player";
 import { Node } from "@discordx/lava-player";
 import { GatewayDispatchEvents } from "discord.js";

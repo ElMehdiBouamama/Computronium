@@ -1,25 +1,43 @@
-import { LoadType, Status, TrackResponse } from "@discordx/lava-player";
+import { Status } from "@discordx/lava-player";
 import { Player } from "@discordx/lava-queue";
 import { Player as PlayerWrapper } from "@discordx/music";
-import { replyToInteraction, simpleErrorEmbed, simpleSuccessEmbed } from '@utils/functions';
-import { CommandInteraction, EmbedBuilder, Guild, GuildMember, TextBasedChannel } from "discord.js";
+import { simpleErrorEmbed, simpleSuccessEmbed } from '@utils/functions';
+import { CommandInteraction, Guild, GuildMember, TextBasedChannel } from "discord.js";
 import { Client } from "discordx";
+import { singleton } from "tsyringe";
 import { getNode } from "./node";
 import { MusicQueue } from './queue';
 
-export class MusicPlayer extends PlayerWrapper {
+@singleton()
+export class MusicHandler extends PlayerWrapper {
     static players: Record<string, Player> = {} // botId with their respective players
+    private interaction: CommandInteraction
+    private client: Client
 
-    constructor(private client: Client, private interaction: CommandInteraction) {
+    constructor() {
         super()
+    }
+
+    use(client: Client, interaction: CommandInteraction) {
+        this.interaction = interaction
+        this.client = client
         // Check if lava player exist for the bot if it doesn't create a lavalink player with default parameters
-        if (!MusicPlayer.players[this.client.botId]) {
-            MusicPlayer.players[client.botId] = new Player(getNode(client))
+        if (!MusicHandler.players[this.client.botId]) {
+            MusicHandler.players[client.botId] = new Player(getNode(client))
         }
     }
 
-    GetQueue(): MusicQueue | null {
-        const player = MusicPlayer.players[this.client.botId]
+    private sanitize(text: string) {
+        try {
+            new URL(text)
+        } catch (_) {
+            return
+        }
+        return text
+    }
+
+    getQueue(): MusicQueue | null {
+        const player = MusicHandler.players[this.client.botId]
         if (!player || !this.interaction.guildId) {
             return null
         }
@@ -29,7 +47,7 @@ export class MusicPlayer extends PlayerWrapper {
     }
 
     private async validateCommand(
-        skipBotChannel = false
+        skipBotChannel = false, skipMemberChannel = false
     ): Promise<
         | {
             channel: TextBasedChannel
@@ -49,7 +67,7 @@ export class MusicPlayer extends PlayerWrapper {
             return
         }
 
-        if (!this.interaction.member.voice.channelId) {
+        if (!skipMemberChannel && !this.interaction.member.voice.channelId) {
             await simpleErrorEmbed(this.interaction, `Join a voice channel first`)
             return
         }
@@ -71,7 +89,7 @@ export class MusicPlayer extends PlayerWrapper {
             return
         }
 
-        const queue = this.GetQueue();
+        const queue = this.getQueue();
 
         if (!queue) {
             await simpleErrorEmbed(this.interaction, `The player is not ready yet, please wait`)
@@ -94,53 +112,42 @@ export class MusicPlayer extends PlayerWrapper {
         }
         const { queue, member, channel } = cmd
 
-        let response: TrackResponse;
+        const url = this.sanitize(query)
 
-        const searchResponse = await queue.search(`ytsearch:${query}`)
-        const track = searchResponse.tracks[0]
-        if (!track) {
-            await simpleErrorEmbed(this.interaction, `Couldn't find this song`)
+        const searchResponse = await queue.search(url ?? 'ytsearch:' + query)
+
+        if (searchResponse) {
+
+            const tracks = searchResponse.playlistInfo.name ? searchResponse.tracks : [searchResponse.tracks[0]]
+
+            if (!tracks) {
+                await simpleErrorEmbed(this.interaction, `Couldn't find this song`)
+                return
+            }
+
+            queue.tracks.push(...tracks);
+
+            await queue.lavaPlayer.join(member.voice.channelId, { deaf: true })
+
+            queue.channel = channel
+
+            if (
+                queue.lavaPlayer.status === Status.INSTANTIATED ||
+                queue.lavaPlayer.status === Status.UNKNOWN ||
+                queue.lavaPlayer.status === Status.ENDED
+            ) {
+                queue.playNext()
+            }
+
+            const embed = queue.view(member)
+            await this.interaction.followUp({ embeds: [embed] })
             return
         }
-
-        queue.tracks.push(track);
-        response = {
-            loadType: LoadType.TRACK_LOADED,
-            playlistInfo: {},
-            tracks: [track],
-        }
-
-
-        await queue.lavaPlayer.join(member.voice.channelId, {
-            deaf: true,
-        })
-
-        queue.channel = channel
-
-        if (
-            queue.lavaPlayer.status === Status.INSTANTIATED ||
-            queue.lavaPlayer.status === Status.UNKNOWN ||
-            queue.lavaPlayer.status === Status.ENDED
-        ) {
-            queue.playNext()
-        }
-
-        if (response.playlistInfo.name) {
-            //await simpleSuccessEmbed(this.interaction, `Added ${response.tracks.length} from ${response.playlistInfo.name}`)
-        } else if (response.tracks.length === 1) {
-            // await simpleSuccessEmbed(this.interaction, `Added [${response.tracks[0]?.info.title}](<${response.tracks[0]?.info.uri}>)`)
-        } else {
-            //await simpleSuccessEmbed(this.interaction, `Added ${response.tracks.length}`)
-        }
-
-        const embed = queue.view(member)
-        await this.interaction.followUp({ embeds: [embed] })
-        return
     }
 
     async seek(seconds: number): Promise<void> {
 
-        const cmd = await this.validateCommand(false);
+        const cmd = await this.validateCommand(false, false);
         if (!cmd) {
             return
         }
@@ -169,7 +176,7 @@ export class MusicPlayer extends PlayerWrapper {
     }
 
     async skip(): Promise<void> {
-        const cmd = await this.validateCommand(false)
+        const cmd = await this.validateCommand(false, true)
         if (!cmd) {
             return
         }
@@ -184,21 +191,20 @@ export class MusicPlayer extends PlayerWrapper {
     }
 
     async stop(): Promise<void> {
-        const cmd = await this.validateCommand(false)
+        const cmd = await this.validateCommand(false, true)
         if (!cmd) {
             return
         }
         const { queue } = cmd
         if (queue.isPlaying) {
             queue.stop()
-            queue.lavaPlayer.leave()
-            return await simpleSuccessEmbed(this.interaction, `Stopped music`)
         }
-        return await simpleErrorEmbed(this.interaction, `No music is currently playing`)
+        await queue.lavaPlayer.leave()
+        return await simpleSuccessEmbed(this.interaction, `Stopped music`)
     }
 
     async pause(): Promise<void> {
-        const cmd = await this.validateCommand(false)
+        const cmd = await this.validateCommand(false, true)
         if (!cmd) {
             return
         }
@@ -211,7 +217,7 @@ export class MusicPlayer extends PlayerWrapper {
     }
 
     async resume(): Promise<void> {
-        const cmd = await this.validateCommand(false)
+        const cmd = await this.validateCommand(false, true)
         if (!cmd) {
             return
         }
@@ -224,7 +230,7 @@ export class MusicPlayer extends PlayerWrapper {
     }
 
     async shuffle(): Promise<void> {
-        const cmd = await this.validateCommand(false)
+        const cmd = await this.validateCommand(false, true)
         if (!cmd) {
             return
         }
@@ -235,7 +241,7 @@ export class MusicPlayer extends PlayerWrapper {
     }
 
     async loop(): Promise<void> {
-        const cmd = await this.validateCommand(false)
+        const cmd = await this.validateCommand(false, true)
         if (!cmd) {
             return
         }
@@ -246,7 +252,7 @@ export class MusicPlayer extends PlayerWrapper {
     }
 
     async repeat(): Promise<void> {
-        const cmd = await this.validateCommand(false)
+        const cmd = await this.validateCommand(false, true)
         if (!cmd) {
             return
         }
@@ -257,33 +263,41 @@ export class MusicPlayer extends PlayerWrapper {
     }
 
     async save(name: string): Promise<boolean> {
-        const cmd = await this.validateCommand(false)
+        const cmd = await this.validateCommand(true, true)
         if (!cmd) {
             return false
         }
-        const { queue, member, channel } = cmd
+        const { queue, member } = cmd
         queue.save(name, member)
         return false
     }
 
     async load(name: string): Promise<boolean> {
-        const cmd = await this.validateCommand(false)
+        const cmd = await this.validateCommand(true, true)
         if (!cmd) {
             return false
         }
-        const { queue, member, channel } = cmd
-        let playlist: string[] = []
+        const { queue, member } = cmd
+        const playlist = queue.load(name, member)
         return false
     }
 
+    async getPlaylists(): Promise<string[] | undefined> {
+        const cmd = await this.validateCommand(true, true)
+        if (!cmd) {
+            return undefined
+        }
+        const { queue, member } = cmd
+        return await queue.getPlaylists(member)
+    }
+
     async view(): Promise<void> {
-        const cmd = await this.validateCommand(true)
+        const cmd = await this.validateCommand(true, true)
         if (!cmd) {
             return;
         }
         const { queue, member } = cmd
         const embed = await queue.view(member)
-        console.log(embed)
         await this.interaction.followUp({ embeds: [embed] })
     }
 }

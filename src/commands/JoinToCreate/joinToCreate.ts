@@ -85,12 +85,7 @@ export default class ChannelCommand {
         if (interaction.guildId) {
             const guildChannel = await this.jtcService.getGuildChannels(interaction.guildId)
             const channels = guildChannel.channelIds
-                .filter(channelId => {
-                    if (interaction.guild?.channels.resolve(channelId)) {
-                        return true
-                    }
-                    return false
-                })
+                .filter(channelId => interaction.guild?.channels.resolve(channelId) ? true : false)
                 .map(channelId => `<#${channelId}>`).join("\n")
             return await simpleSuccessEmbed(interaction, `${channels ? channels : "No Join To Create channel found"}`)
         } else {

@@ -80,6 +80,7 @@ async function run() {
             const imagesUpload = await resolveDependency(ImagesUpload)
             await imagesUpload.syncWithDatabase()
         }
+
     })
     .catch((err) => {
         console.error(err)

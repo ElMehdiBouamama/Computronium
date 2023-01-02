@@ -1,7 +1,7 @@
 import { ArgsOf } from "discordx";
 import { container, injectable } from "tsyringe";
 
-import { Discord, Guard, On } from "@decorators";
+import { Discord, On } from "@decorators";
 import { JoinToCreate, voiceChannelMembersStore } from "@services";
 import { BaseJoinToCreate } from "@utils/classes";
 
@@ -18,7 +18,6 @@ export default class JoinToCreateUpdateEvent {
     // =============================
 
     @On('voiceStateUpdate')
-    @Guard()
     async voiceStateHandler(
         [leftState, joinedState]: ArgsOf<"voiceStateUpdate">
     ) {
@@ -53,7 +52,6 @@ export default class JoinToCreateUpdateEvent {
                     await leftState.channel.delete("Temp channel: Empty");
                 }
                 store.remove(channelId, memberId) 
-                console.log(store.getMembers(channelId))
             }
         }
     }

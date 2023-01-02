@@ -4,7 +4,8 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <Name>Bot</Name>
     <RootNamespace>Bot</RootNamespace>
-    <Environment>TOKEN=MTA0Njc1MjIwMjIyNTYzMTI5NA.GPNQDW.49rN-YNZVD9fpQdtaWSWqISDnVcgXqQn41V1eQ</Environment>
+    <Environment>TOKEN=MTA0Njc1MjIwMjIyNTYzMTI5NA.GPNQDW.49rN-YNZVD9fpQdtaWSWqISDnVcgXqQn41V1eQ
+NODE_ENV=production</Environment>
     <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
     <EnableTypeScript>true</EnableTypeScript>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
@@ -82,6 +83,7 @@
     <Folder Include="src\commands\Channel\" />
     <Folder Include="src\commands\Embed\" />
     <Folder Include="src\commands\JoinToCreate\" />
+    <Folder Include="src\commands\ReactionRole\" />
     <Folder Include="src\commands\Owner\" />
     <Folder Include="src\config\" />
     <Folder Include="src\entities\" />
@@ -131,10 +133,13 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\commands\General\ping.ts" />
     <TypeScriptCompile Include="src\commands\General\stats.ts" />
+    <TypeScriptCompile Include="src\commands\Music\node.ts" />
     <TypeScriptCompile Include="src\commands\Music\player.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\commands\Music\queue.ts" />
     <TypeScriptCompile Include="src\commands\Owner\maintenance.ts" />
+    <TypeScriptCompile Include="src\commands\ReactionRole\reactionrole.ts" />
     <TypeScriptCompile Include="src\config\api.ts" />
     <TypeScriptCompile Include="src\config\database.ts" />
     <TypeScriptCompile Include="src\config\modals.ts" />
@@ -151,6 +156,7 @@
     <TypeScriptCompile Include="src\entities\Pastebin.ts" />
     <TypeScriptCompile Include="src\entities\Stat.ts" />
     <TypeScriptCompile Include="src\entities\User.ts" />
+    <TypeScriptCompile Include="src\events\custom\MessageReactionEvents.ts" />
     <TypeScriptCompile Include="src\events\custom\joinToCreateUpdate.ts" />
     <TypeScriptCompile Include="src\events\custom\guildAdmin.ts" />
     <TypeScriptCompile Include="src\events\custom\simpleCommandCreate.ts" />
@@ -183,6 +189,7 @@
     <TypeScriptCompile Include="src\services\ErrorHandler.ts" />
     <TypeScriptCompile Include="src\services\ImagesUpload.ts" />
     <TypeScriptCompile Include="src\services\index.ts" />
+    <TypeScriptCompile Include="src\services\ReactionRoles.ts" />
     <TypeScriptCompile Include="src\services\JointToCreate.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -197,6 +204,7 @@
     <TypeScriptCompile Include="src\services\Store.ts" />
     <TypeScriptCompile Include="src\services\WebSocket.ts" />
     <TypeScriptCompile Include="src\utils\classes\BaseController.ts" />
+    <TypeScriptCompile Include="src\utils\classes\BaseReactionRole.ts" />
     <TypeScriptCompile Include="src\utils\classes\BaseJoinToCreate.ts" />
     <TypeScriptCompile Include="src\utils\classes\BaseError.ts" />
     <TypeScriptCompile Include="src\utils\classes\index.ts" />

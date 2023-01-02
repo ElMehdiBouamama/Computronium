@@ -1,7 +1,23 @@
+plugins:
+  lavasrc:
+    providers: # Custom providers for track loading. This is the default
+      - "ytsearch:\"%ISRC%\"" # Will be ignored if track does not have an ISRC. See https://en.wikipedia.org/wiki/International_Standard_Recording_Code
+      - "ytsearch:%QUERY%" # Will be used if track has no ISRC or no track could be found for the ISRC
+    sources:
+      spotify: true # Enable Spotify source
+    spotify:
+      clientId: "604061a12423480392491bf3837bdbec"
+      clientSecret: "c910a03900af477ea9200204e671b8bb"
+      countryCode: "US"
+
+
 server: # REST and WS server
   port: 2333
   address: 0.0.0.0
 lavalink:
+  plugins:
+    - dependency: "com.github.TopiSenpai.LavaSrc:lavasrc-plugin:3.1.7"
+      repository: "https://jitpack.io"
   server:
     password: "youshallnotpass"
     sources:
@@ -22,6 +38,7 @@ lavalink:
     playerUpdateInterval: 5 # How frequently to send player updates to clients, in seconds
     youtubeSearchEnabled: true
     soundcloudSearchEnabled: true
+
     gc-warnings: true
     #ratelimit:
       #ipBlocks: ["1.0.0.0/8", "..."] # list of ip blocks

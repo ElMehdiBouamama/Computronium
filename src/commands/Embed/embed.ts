@@ -1,14 +1,12 @@
 ﻿import { ActionRowBuilder, ApplicationCommandOptionType, CommandInteraction, EmbedBuilder, ModalActionRowComponentBuilder, ModalBuilder, ModalSubmitInteraction, TextBasedChannel, TextInputBuilder, TextInputStyle } from "discord.js"
 import { Client, ModalComponent } from "discordx"
-
 import { Discord, Slash, SlashGroup, SlashOption } from "@decorators"
 import { Category } from "@discordx/utilities"
-import { simpleSuccessEmbed } from "@utils/functions"
 
 @Discord()
 @Category('Embeds')
-@SlashGroup({ name: 'embed', description: 'Manage embeds in channels' })
-@SlashGroup('embed')
+@SlashGroup({ name: 'embed', description: 'Manage embeds in channels', root: 'messages' })
+@SlashGroup('embed', 'messages')
 export default class EmbedCommand {
 
     channel: TextBasedChannel | null;
@@ -90,8 +88,6 @@ export default class EmbedCommand {
                     .setTitle(`❌ The embed is incorrect!`)
                     .setDescription(`Please use this [embed builder](https://glitchii.github.io/embedbuilder/)`)
 
-                console.log(e);
-                
                 await interaction.reply({
                     embeds: [embed]
                 });

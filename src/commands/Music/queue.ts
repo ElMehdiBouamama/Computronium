@@ -1,24 +1,27 @@
-import { Status, Track } from "@discordx/lava-player";
+import { Status } from "@discordx/lava-player";
 import type { Player } from "@discordx/lava-queue";
 import { Queue } from "@discordx/lava-queue";
-import { APIEmbedField, Colors, Embed, EmbedBuilder, GuildMember, TextBasedChannel } from "discord.js";
+import { MusicService } from "@services";
+import { APIEmbedField, Colors, EmbedBuilder, GuildMember, TextBasedChannel } from "discord.js";
+import { autoInjectable } from "tsyringe";
 
+@autoInjectable()
 export class MusicQueue extends Queue {
     channel?: TextBasedChannel;
 
-    get isPlaying(): boolean {
-        return this.lavaPlayer.status === Status.PLAYING;
+    constructor(player: Player, guildId: string, private musicService?: MusicService) {
+        super(player, guildId);
     }
 
-    constructor(player: Player, guildId: string) {
-        super(player, guildId);
+    get isPlaying(): boolean {
+        return this.lavaPlayer.status === Status.PLAYING;
     }
 
     view(member: GuildMember) {
         const fields: APIEmbedField[] = []
         var i = 0
 
-        this.tracks.forEach(track => {
+        this.tracks.slice(0, 25).forEach(track => {
             fields.push({
                 name: `${++i}. ${(track).info.title}`,
                 value: track.info.uri,
@@ -39,7 +42,7 @@ export class MusicQueue extends Queue {
                         iconURL: member.user.avatarURL({ size: 32 }) ?? ''
                     })
                     .setThumbnail(`https://i.ytimg.com/vi/${this.currentTrack.info.identifier}/0.jpg`)
-                    .setFooter({ text: `loop: ${this.loop ? 'on' : 'off'} --- repeat: ${this.repeat? 'on' : 'off'}`})
+                    .setFooter({ text: `loop: ${this.loop ? 'on' : 'off'} -- repeat: ${this.repeat ? 'on' : 'off'}` })
             }
             else {
                 return new EmbedBuilder()
@@ -58,7 +61,22 @@ export class MusicQueue extends Queue {
             .setColor(Colors.Red)
     }
 
-    save(name: string, member: GuildMember): boolean {
+    async save(playlistName: string, member: GuildMember): Promise<boolean> {
+        const tracksToSave = this.tracks.map(track => track.info.identifier)
+        await this.musicService.addTracks(this.guildId, member.id, playlistName, tracksToSave)
         return true
+    }
+
+    async load(playlistName: string, member: GuildMember): Promise<boolean> {
+        const tracks = await this.musicService.getPlaylist(this.guildId, member.id, playlistName)
+        if (tracks) {
+            this.clear()
+            tracks.forEach(track => this.enqueue(track))
+        }
+        return true
+    }
+
+    async getPlaylists(member: GuildMember): Promise<string[]> {
+        return this.musicService.getUser(this.guildId, member.id)
     }
 }

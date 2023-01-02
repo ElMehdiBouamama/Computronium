@@ -238,7 +238,7 @@ export class Logger {
                     },
                     {
                         name: "Channel",
-                        value: channel instanceof TextChannel || channel instanceof ThreadChannel ? `#${channel.name}` : 'Unknown',
+                        value: channel instanceof TextChannel || channel instanceof ThreadChannel ? `${channel.id ? "<#" + channel.id + ">": "#"+ channel.name} ` : 'Unknown',
                         inline: true
                     }
                 ],

@@ -1,16 +1,19 @@
 ﻿import { Discord, Slash, SlashGroup, SlashOption } from "@decorators";
+import { Category } from "@discordx/utilities";
 import type { CommandInteraction } from "discord.js";
 import { ApplicationCommandOptionType } from "discord.js";
 import type { Client } from "discordx";
-import { Category } from "@discordx/utilities";
-import { MusicPlayer } from "./player";
+import { injectable } from "tsyringe";
+import { simpleSuccessEmbed } from "../../utils/functions";
+import { MusicHandler } from "./player";
 
 @Discord()
 @Category('Music')
 @SlashGroup({ name: 'music', description: 'Play music in your voice channel' })
 @SlashGroup('music')
+@injectable()
 export class Music {
-    constructor() { }
+    constructor(private player: MusicHandler) { }
 
     @Slash({ description: "Play music in your voice channel" })
     async play(
@@ -24,9 +27,8 @@ export class Music {
         interaction: CommandInteraction,
         client: Client
     ): Promise<void> {
-
-        const player = new MusicPlayer(client, interaction)
-        await player.play(query)
+        this.player.use(client, interaction)
+        await this.player.play(query)
     }
 
     @Slash({ description: "Seek a time in the currently playing music" })
@@ -41,74 +43,100 @@ export class Music {
         interaction: CommandInteraction,
         client: Client
     ): Promise<void> {
-        const player = new MusicPlayer(client, interaction)
-        await player.seek(seconds)
+        this.player.use(client, interaction)
+        await this.player.seek(seconds)
     }
 
     @Slash({ description: "Skip the currently playing music" })
     async skip(interaction: CommandInteraction, client: Client) {
-        const player = new MusicPlayer(client, interaction)
-        await player.skip()
+        this.player.use(client, interaction)
+        await this.player.skip()
     }
 
     @Slash({ description: "Stop the currently playing music" })
     async stop(interaction: CommandInteraction, client: Client) {
-        const player = new MusicPlayer(client, interaction)
-        await player.stop()
+        this.player.use(client, interaction)
+        await this.player.stop()
     }
 
     @Slash({ description: "Pause the currently playing music" })
     async pause(interaction: CommandInteraction, client: Client) {
-        const player = new MusicPlayer(client, interaction)
-        await player.pause()
+        this.player.use(client, interaction)
+        await this.player.pause()
     }
 
     @Slash({ description: "Resume playing music" })
     async resume(interaction: CommandInteraction, client: Client) {
-        const player = new MusicPlayer(client, interaction)
-        await player.resume()
+        this.player.use(client, interaction)
+        await this.player.resume()
     }
 
     @Slash({ description: "Shuffle music in the currently playing queue" })
     async shuffle(interaction: CommandInteraction, client: Client) {
-        const player = new MusicPlayer(client, interaction)
-        await player.shuffle()
+        this.player.use(client, interaction)
+        await this.player.shuffle()
     }
 
     @Slash({ description: "Loop the entire queue" })
     async loop(interaction: CommandInteraction, client: Client) {
-        const player = new MusicPlayer(client, interaction)
-        await player.loop()
+        this.player.use(client, interaction)
+        await this.player.loop()
     }
 
     @Slash({ description: "repeat currently playing music" })
     async repeat(interaction: CommandInteraction, client: Client) {
-        const player = new MusicPlayer(client, interaction)
-        await player.repeat()
+        this.player.use(client, interaction)
+        await this.player.repeat()
     }
 
-    //@Slash({ description: "Save the playlist with a custom playlist name" })
-    //async save(
-    //    @SlashOption({
-    //        description: "Name of the playlist",
-    //        name: "name",
-    //        required: true,
-    //        type: ApplicationCommandOptionType.String,
-    //    })
-    //    name: string,
-    //    interaction: CommandInteraction,
-    //    client: Client
-    //) {
-    //    const player = new MusicPlayer(client, interaction)
-    //    player.save(name)
-    //}
+    @Slash({ description: "Save the playlist with a custom playlist name" })
+    async save(
+        @SlashOption({
+            description: "Name of the playlist",
+            name: "name",
+            required: true,
+            type: ApplicationCommandOptionType.String,
+        })
+        name: string,
+        interaction: CommandInteraction,
+        client: Client
+    ) {
+        this.player.use(client, interaction)
+        await this.player.save(name)
+    }
+
+    @Slash({ description: "Load a saved playlist" })
+    async load(
+        @SlashOption({
+            description: "Name of the playlist",
+            name: "name",
+            required: true,
+            type: ApplicationCommandOptionType.String,
+        })
+        name: string,
+        interaction: CommandInteraction,
+        client: Client
+    ) {
+        this.player.use(client, interaction)
+        await this.player.save(name)
+    }
+
+    @Slash({ description: "Get your currently stored playlists" })
+    async playlists(
+        interaction: CommandInteraction,
+        client: Client
+    ) {
+        this.player.use(client, interaction)
+        const playLists = await this.player.getPlaylists()
+        simpleSuccessEmbed(interaction, JSON.stringify(playLists))
+    }
 
     @Slash({ description: "Show the currently playing music" })
     async playing(
         interaction: CommandInteraction,
         client: Client
     ) {
-        const player = new MusicPlayer(client, interaction)
-        await player.view()
+        this.player.use(client, interaction)
+        await this.player.view()
     }
 }

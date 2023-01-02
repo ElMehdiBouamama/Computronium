@@ -28,7 +28,7 @@ export const logsConfig: LogsConfigType = {
     newUser: {
         file: true,
         console: true,
-        channel: "1037758796006690837"
+        channel: "1037789153473073243"
     },
 
     guild: {

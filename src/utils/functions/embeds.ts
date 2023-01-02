@@ -13,7 +13,7 @@ export const simpleSuccessEmbed = async (interaction: CommandInteraction | Modal
         .setTitle(`✅ Success`)
         .setDescription(`${message}`)
 
-    await replyToInteraction(interaction, { embeds: [embed] })
+    await replyToInteraction(interaction, { ephemeral: true, embeds: [embed.data] })
 }
 
 /**
@@ -28,7 +28,7 @@ export const simpleErrorEmbed = async (interaction: CommandInteraction | ModalSu
         .setTitle(`❌ Error`)
         .setDescription(`${message}`)
 
-    await replyToInteraction(interaction, { embeds: [embed] })
+    await replyToInteraction(interaction, { ephemeral: true, embeds: [embed] })
 }
 
 

@@ -1,7 +1,7 @@
 import { GatewayIntentBits, Partials } from "discord.js"
 
 import { generalConfig, logsConfig } from "@config"
-import { ExtractLocale, Maintenance, NotBot } from "@guards"
+import { ExtractLocale, Maintenance } from "@guards"
 
 export const clientConfig = {
 	
@@ -21,17 +21,20 @@ export const clientConfig = {
 	],
 
 	partials: [
-		Partials.Channel
+		Partials.Message, 
+		Partials.Channel,
+		Partials.Reaction,
+		Partials.User,
+		Partials.GuildMember
 	],
 
 	// debug logs are disabled in silent mode
 	silent: !logsConfig.debug,
 
 	guards: [
-		NotBot,
 		Maintenance,
 		ExtractLocale
-	],
+	],	
 
 	// configuration for @SimpleCommand
 	simpleCommand: {

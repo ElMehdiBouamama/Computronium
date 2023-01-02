@@ -1,10 +1,7 @@
+﻿import { Discord, Slash, SlashGroup, SlashOption } from "@decorators"
 import { Category } from "@discordx/utilities"
+import { simpleErrorEmbed, simpleSuccessEmbed } from "@utils/functions"
 import { ApplicationCommandOptionType, CommandInteraction, TextBasedChannel, TextChannel } from "discord.js"
-import { Client } from "discordx"
-
-import { Discord, Slash, SlashGroup, SlashOption } from "@decorators"
-import { Guard } from "@guards"
-import { simpleSuccessEmbed } from "@utils/functions"
 
 @Discord()
 @Category('Messages')
@@ -15,7 +12,6 @@ export default class MessageCommand {
     @Slash({
         description: "Delete messages from the specified channel"
     })
-    @Guard()
     async delete(
         @SlashOption({
             description: "number of messages to delete",
@@ -31,25 +27,25 @@ export default class MessageCommand {
             required: false,
         })
         channel: TextBasedChannel | null,
-        interaction: CommandInteraction,
-        client: Client,
-        { localize }: InteractionData
+        interaction: CommandInteraction
     ) {
+        channel = channel ?? interaction.channel
 
-        if (!channel) {
-            channel = interaction.channel;
-        }
-
-        const msgs = await channel?.messages.fetch({ limit: count, before: interaction.id });
+        const msgs = await channel?.messages.fetch({ limit: count, before: interaction.id })
         if (msgs) {
-            if (count < 2) {
-                await msgs.forEach(x => { x.delete() });
-            } else {
-                (channel as TextChannel).bulkDelete(msgs);
+            try {
+                if (count < 2) {
+                    await msgs.forEach(x => { x.delete() })
+                } else {
+                    (channel as TextChannel).bulkDelete(msgs)
+
+                }
+            } catch (e) {
+                return await simpleErrorEmbed(interaction, "Could not delete the messages!")
             }
         }
 
-        await simpleSuccessEmbed(
+        return await simpleSuccessEmbed(
             interaction,
             count.toString() + ' Messages Deleted!'
         );
