@@ -4,17 +4,19 @@ import { Player as PlayerWrapper } from "@discordx/music";
 import { simpleErrorEmbed, simpleSuccessEmbed } from '@utils/functions';
 import { CommandInteraction, Guild, GuildMember, TextBasedChannel } from "discord.js";
 import { Client } from "discordx";
-import { singleton } from "tsyringe";
+import { injectable, singleton } from "tsyringe";
+import { MusicService } from "../../services";
 import { getNode } from "./node";
 import { MusicQueue } from './queue';
 
 @singleton()
+@injectable()
 export class MusicHandler extends PlayerWrapper {
     static players: Record<string, Player> = {} // botId with their respective players
     private interaction: CommandInteraction
     private client: Client
 
-    constructor() {
+    constructor(private musicService: MusicService) {
         super()
     }
 
@@ -42,7 +44,7 @@ export class MusicHandler extends PlayerWrapper {
             return null
         }
 
-        const queue = new MusicQueue(player, this.interaction.guildId)
+        const queue = new MusicQueue(player, this.interaction.guildId, this.musicService)
         return player.queue(this.interaction.guildId, () => queue)
     }
 

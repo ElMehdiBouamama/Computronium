@@ -3,13 +3,13 @@ import type { Player } from "@discordx/lava-queue";
 import { Queue } from "@discordx/lava-queue";
 import { MusicService } from "@services";
 import { APIEmbedField, Colors, EmbedBuilder, GuildMember, TextBasedChannel } from "discord.js";
-import { autoInjectable } from "tsyringe";
+import { injectable } from "tsyringe";
 
-@autoInjectable()
+@injectable()
 export class MusicQueue extends Queue {
     channel?: TextBasedChannel;
 
-    constructor(player: Player, guildId: string, private musicService?: MusicService) {
+    constructor(player: Player, guildId: string, private musicService: MusicService) {
         super(player, guildId);
     }
 
