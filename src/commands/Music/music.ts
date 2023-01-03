@@ -1,10 +1,10 @@
 ﻿import { Discord, Slash, SlashGroup, SlashOption } from "@decorators";
 import { Category } from "@discordx/utilities";
-import type { CommandInteraction } from "discord.js";
+import { CommandInteraction, SelectMenuInteraction, StringSelectMenuBuilder } from "discord.js";
 import { ApplicationCommandOptionType } from "discord.js";
-import type { Client } from "discordx";
+import { Client, SelectMenuComponent } from "discordx";
 import { injectable } from "tsyringe";
-import { simpleSuccessEmbed } from "../../utils/functions";
+import { simpleErrorEmbed, simpleSuccessEmbed } from "../../utils/functions";
 import { MusicHandler } from "./player";
 
 @Discord()
@@ -107,6 +107,15 @@ export class Music {
 
     @Slash({ description: "Load a saved playlist" })
     async load(
+        interaction: CommandInteraction,
+        client: Client
+    ) {
+        this.player.use(client, interaction)
+        await this.player.displayPlaylists()
+    }
+
+    @Slash({ description: "Delete a playlist by specifying it's name" })
+    async delete(
         @SlashOption({
             description: "Name of the playlist",
             name: "name",
@@ -118,17 +127,7 @@ export class Music {
         client: Client
     ) {
         this.player.use(client, interaction)
-        await this.player.save(name)
-    }
-
-    @Slash({ description: "Get your currently stored playlists" })
-    async playlists(
-        interaction: CommandInteraction,
-        client: Client
-    ) {
-        this.player.use(client, interaction)
-        const playLists = await this.player.getPlaylists()
-        simpleSuccessEmbed(interaction, JSON.stringify(playLists))
+        await this.player.delete(name)
     }
 
     @Slash({ description: "Show the currently playing music" })
@@ -138,5 +137,20 @@ export class Music {
     ) {
         this.player.use(client, interaction)
         await this.player.view()
+    }
+
+    @SelectMenuComponent({ id: "playlist-menu" })
+    async handle(interaction: SelectMenuInteraction): Promise<unknown> {
+        // extract selected value by member
+        const playlistName = interaction.values?.[0];
+
+        // if value not found
+        if (!playlistName) {
+            return interaction.followUp("invalid playlist name, select again");
+        }
+
+        await this.player.clear()
+        await this.player.load(playlistName)
+        return;
     }
 }

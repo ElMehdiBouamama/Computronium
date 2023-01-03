@@ -2,7 +2,7 @@ import { Status } from "@discordx/lava-player";
 import { Player } from "@discordx/lava-queue";
 import { Player as PlayerWrapper } from "@discordx/music";
 import { simpleErrorEmbed, simpleSuccessEmbed } from '@utils/functions';
-import { CommandInteraction, Guild, GuildMember, TextBasedChannel } from "discord.js";
+import { ActionRowBuilder, CommandInteraction, Guild, GuildMember, MessageActionRowComponentBuilder, SelectMenuInteraction, StringSelectMenuBuilder, TextBasedChannel } from "discord.js";
 import { Client } from "discordx";
 import { injectable, singleton } from "tsyringe";
 import { MusicService } from "../../services";
@@ -13,14 +13,14 @@ import { MusicQueue } from './queue';
 @injectable()
 export class MusicHandler extends PlayerWrapper {
     static players: Record<string, Player> = {} // botId with their respective players
-    private interaction: CommandInteraction
+    private interaction: CommandInteraction | SelectMenuInteraction
     private client: Client
 
     constructor(private musicService: MusicService) {
         super()
     }
 
-    use(client: Client, interaction: CommandInteraction) {
+    use(client: Client, interaction: CommandInteraction | SelectMenuInteraction) {
         this.interaction = interaction
         this.client = client
         // Check if lava player exist for the bot if it doesn't create a lavalink player with default parameters
@@ -44,7 +44,7 @@ export class MusicHandler extends PlayerWrapper {
             return null
         }
 
-        const queue = new MusicQueue(player, this.interaction.guildId, this.musicService)
+        const queue = new MusicQueue(player, this.interaction.guildId)
         return player.queue(this.interaction.guildId, () => queue)
     }
 
@@ -264,33 +264,76 @@ export class MusicHandler extends PlayerWrapper {
         await this.interaction.followUp({ embeds: [embed] })
     }
 
-    async save(name: string): Promise<boolean> {
+    async save(name: string): Promise<void> {
         const cmd = await this.validateCommand(true, true)
         if (!cmd) {
-            return false
+            await simpleErrorEmbed(this.interaction, `An error occured while saving the playlist`)
+            return
         }
         const { queue, member } = cmd
-        queue.save(name, member)
-        return false
+        const saved = await queue.save(name, member)
+        if (saved) {
+            await simpleSuccessEmbed(this.interaction, `Playlist saved as **${name}**!`)
+        } else {
+            await simpleErrorEmbed(this.interaction, `An error occured while saving the playlist`)
+        }
+        return
     }
 
-    async load(name: string): Promise<boolean> {
+    async load(name: string): Promise<void> {
         const cmd = await this.validateCommand(true, true)
         if (!cmd) {
-            return false
+            return
         }
         const { queue, member } = cmd
-        const playlist = queue.load(name, member)
-        return false
+        const loaded = await queue.load(name, member)
+        if (loaded) {
+            await this.view()
+        } else {
+            await simpleErrorEmbed(this.interaction, `An error occured while loading the playlist`)
+        }
+        return
     }
 
-    async getPlaylists(): Promise<string[] | undefined> {
+    async delete(name: string): Promise<void> {
         const cmd = await this.validateCommand(true, true)
         if (!cmd) {
-            return undefined
+            return
         }
         const { queue, member } = cmd
-        return await queue.getPlaylists(member)
+        const deleted = await queue.delete(name, member)
+        if (deleted) {
+            await simpleSuccessEmbed(this.interaction, `Playlist **${name}** deleted!`)
+        } else {
+            await simpleErrorEmbed(this.interaction, `An error occured while deleting the playlist`)
+        }
+        return
+    }
+
+    async displayPlaylists(): Promise<void> {
+        const cmd = await this.validateCommand(true, true)
+        if (!cmd) {
+            return
+        }
+        const { queue, member } = cmd
+        const playlists = await queue.getPlaylists(member)
+        if (playlists && playlists?.length > 0) {
+            const menu = new StringSelectMenuBuilder()
+                .addOptions(playlists.map(playlist => { return { label: playlist, value: playlist } }))
+                .setCustomId("playlist-menu")
+                .setPlaceholder("Select the playlist you want to load")
+
+            // create a row for message actions
+            const buttonRow = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(menu)
+
+            this.interaction.editReply({
+                components: [buttonRow]
+            })
+        }
+        else {
+            simpleErrorEmbed(this.interaction, `You don't have any playlist saved you can queue up songs with /music play then save the playlist with /music save`)
+        }
+        return
     }
 
     async view(): Promise<void> {
@@ -301,5 +344,14 @@ export class MusicHandler extends PlayerWrapper {
         const { queue, member } = cmd
         const embed = await queue.view(member)
         await this.interaction.followUp({ embeds: [embed] })
+    }
+
+    async clear(): Promise<void> {
+        const cmd = await this.validateCommand(true, true)
+        if (!cmd) {
+            return;
+        }
+        const { queue, member } = cmd
+        await queue.clear()
     }
 }

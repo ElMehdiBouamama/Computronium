@@ -3,13 +3,13 @@ import type { Player } from "@discordx/lava-queue";
 import { Queue } from "@discordx/lava-queue";
 import { MusicService } from "@services";
 import { APIEmbedField, Colors, EmbedBuilder, GuildMember, TextBasedChannel } from "discord.js";
-import { injectable } from "tsyringe";
+import { autoInjectable } from "tsyringe";
 
-@injectable()
+@autoInjectable()
 export class MusicQueue extends Queue {
     channel?: TextBasedChannel;
 
-    constructor(player: Player, guildId: string, private musicService: MusicService) {
+    constructor(player: Player, guildId: string, private musicService?: MusicService) {
         super(player, guildId);
     }
 
@@ -62,21 +62,34 @@ export class MusicQueue extends Queue {
     }
 
     async save(playlistName: string, member: GuildMember): Promise<boolean> {
-        const tracksToSave = this.tracks.map(track => track.info.identifier)
+        if (!this.musicService || !this.currentTrack) return false
+        const tracksToSave = [this.currentTrack.info.identifier, ...this.tracks.map(track => track.info.identifier)]
         await this.musicService.addTracks(this.guildId, member.id, playlistName, tracksToSave)
         return true
     }
 
     async load(playlistName: string, member: GuildMember): Promise<boolean> {
+        if (!this.musicService) return false
         const tracks = await this.musicService.getPlaylist(this.guildId, member.id, playlistName)
         if (tracks) {
-            this.clear()
-            tracks.forEach(track => this.enqueue(track))
+            const songIds = [...tracks.values()]
+            for (var songId in songIds) {
+                await this.enqueue(songIds[songId])
+            }
+            await this.lavaPlayer.join(member.voice.channelId)
+            this.playNext()
         }
         return true
     }
 
+    async delete(playlistName: string, member: GuildMember): Promise<boolean> {
+        if (!this.musicService) return false
+        await this.musicService.deletePlaylist(this.guildId, member.id, playlistName)
+        return true
+    }
+
     async getPlaylists(member: GuildMember): Promise<string[]> {
-        return this.musicService.getUser(this.guildId, member.id)
+        if (!this.musicService) return []
+        return await this.musicService.getUser(this.guildId, member.id)
     }
 }

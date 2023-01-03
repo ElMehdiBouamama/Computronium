@@ -40,11 +40,11 @@ export class MusicService {
 
         if (data) {
             const trackList: BaseTrackList = data.find(dbEntry => dbEntry.guildId === guildId) ?? new BaseTrackList(guildId)
-
+            //console.log(trackList)
             if (trackList) {
                 const userPlaylists = trackList.userTracks.get(userId)
                 if (userPlaylists) {
-                    return Object.keys(userPlaylists) ?? []
+                    return [...userPlaylists.keys()] ?? []
                 }
             }
         }
@@ -58,7 +58,6 @@ export class MusicService {
 
         if (data) {
             const trackList: BaseTrackList = data.find(dbEntry => dbEntry.guildId === guildId) ?? new BaseTrackList(guildId)
-
             if (trackList) {
                 const userPlaylists = trackList.userTracks.get(userId)
                 if (userPlaylists) {
@@ -123,6 +122,40 @@ export class MusicService {
                 ? new BaseTrackList(oldTrackList.guildId, oldTrackList.userTracks)
                 : new BaseTrackList(guildId)
             success = newTrackList.removeTracks(userId, playlistName, tracks)
+
+            if (oldTrackList && success) {
+                // Replace the old one
+                data = data.map(x => x.guildId !== guildId ? x : newTrackList)
+            } else {
+                // Otherwise add the new one
+                data.push(newTrackList)
+            }
+        }
+
+        await dataRepo.set('trackList', data)
+        return success
+    }
+
+    async deletePlaylist(guildId: string, userId: string, playlistName: string): Promise<boolean> {
+
+        const dataRepo = this.db.get(Data)
+
+        var data = await dataRepo.get(`trackList`)
+
+        var success = false
+
+        if (!data) {
+
+            data = [new BaseTrackList(guildId)]
+
+        } else {
+
+            const oldTrackList = data.find(x => x.guildId === guildId)
+
+            var newTrackList = oldTrackList
+                ? new BaseTrackList(oldTrackList.guildId, oldTrackList.userTracks)
+                : new BaseTrackList(guildId)
+            success = newTrackList.deletePlaylist(userId, playlistName)
 
             if (oldTrackList && success) {
                 // Replace the old one
