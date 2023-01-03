@@ -10,7 +10,7 @@
    
 # What is Computronium
 
-#### **Computronium** is a fully-featured **[discord bot](https://discord.com/developers/docs/intro#bots-and-apps)** written in [Typescript](https://www.typescriptlang.org/), intended to provide hades star discord helping features that are easy to use, extend and modify.
+#### **Computronium** is a fully-featured **[discord bot](https://discord.com/developers/docs/intro#bots-and-apps)** written in [Typescript](https://www.typescriptlang.org/), intended to provide discord helping features that are easy to use, extend and modify.
 
 It uses [`discord.ts`](https://github.com/oceanroleplay/discord.ts) and [`discord.js v14`](https://github.com/discordjs/discord.js). A bot for the hade's star community
 
