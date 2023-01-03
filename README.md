@@ -12,7 +12,7 @@
 
 #### **Computronium** is a fully-featured **[discord bot](https://discord.com/developers/docs/intro#bots-and-apps)** written in [Typescript](https://www.typescriptlang.org/), intended to provide discord helping features that are easy to use, extend and modify.
 
-It uses [`discord.ts`](https://github.com/oceanroleplay/discord.ts) and [`discord.js v14`](https://github.com/discordjs/discord.js). A bot for the hade's star community
+It uses [`discord.ts`](https://github.com/oceanroleplay/discord.ts) and [`discord.js v14`](https://github.com/discordjs/discord.js). A bot tailored for discord communities
 
 This template was created to give developers a starting point for new Discord bots, so that much of the initial setup can be avoided and developers can instead focus on meaningful bot features. Developers can simply copy this repo, and have a working bot with many boilerplate features already included!        
     </td>
