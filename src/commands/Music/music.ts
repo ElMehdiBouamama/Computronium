@@ -139,6 +139,15 @@ export class Music {
         await this.player.view()
     }
 
+    @Slash({ description: "Show the currently playing music" })
+    async clear(
+        interaction: CommandInteraction,
+        client: Client
+    ) {
+        this.player.use(client, interaction)
+        await this.player.clear()
+    }
+
     @SelectMenuComponent({ id: "playlist-menu" })
     async handle(interaction: SelectMenuInteraction): Promise<unknown> {
         // extract selected value by member
@@ -149,8 +158,9 @@ export class Music {
             return interaction.followUp("invalid playlist name, select again");
         }
 
+        //await interaction.message.delete()
         await this.player.clear()
         await this.player.load(playlistName)
-        return;
+        return
     }
 }

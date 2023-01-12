@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Computronium", ".\Bot.njsproj", "{2A0112E9-C57C-4930-87F0-7E4A47455ED2}"
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Bot", "Bot.njsproj", "{2A0112E9-C57C-4930-87F0-7E4A47455ED2}"
+EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Twemoji", "..\Twemoji\Twemoji.njsproj", "{A3377307-7B9F-4444-A02B-E4CBC24E63FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{2A0112E9-C57C-4930-87F0-7E4A47455ED2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A0112E9-C57C-4930-87F0-7E4A47455ED2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A0112E9-C57C-4930-87F0-7E4A47455ED2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3377307-7B9F-4444-A02B-E4CBC24E63FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3377307-7B9F-4444-A02B-E4CBC24E63FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3377307-7B9F-4444-A02B-E4CBC24E63FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3377307-7B9F-4444-A02B-E4CBC24E63FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

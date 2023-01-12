@@ -326,7 +326,7 @@ export class MusicHandler extends PlayerWrapper {
             // create a row for message actions
             const buttonRow = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(menu)
 
-            this.interaction.editReply({
+            this.interaction.followUp({
                 components: [buttonRow]
             })
         }

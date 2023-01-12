@@ -48,7 +48,6 @@ NODE_ENV=production</Environment>
     <Content Include="database\backups\.gitkeep" />
     <Content Include="database\migrations\.gitkeep" />
     <Content Include="docker-compose.yml" />
-    <Content Include="EC2_KeyPair_Src.pem" />
     <Content Include="LICENSE" />
     <Content Include="package-lock.json" />
     <Content Include="package.json">
@@ -60,8 +59,9 @@ NODE_ENV=production</Environment>
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\plugins\.gitkeep" />
+    <Content Include="src\config\emojis\emojis" />
+    <Content Include="src\config\emojis\emojiKDTree" />
     <Content Include="tsconfig.json" />
-    <Content Include="imgur_cred.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".docker\" />
@@ -86,6 +86,7 @@ NODE_ENV=production</Environment>
     <Folder Include="src\commands\ReactionRole\" />
     <Folder Include="src\commands\Owner\" />
     <Folder Include="src\config\" />
+    <Folder Include="src\config\emojis\" />
     <Folder Include="src\entities\" />
     <Folder Include="src\events\" />
     <Folder Include="src\events\custom\" />
@@ -142,6 +143,7 @@ NODE_ENV=production</Environment>
     <TypeScriptCompile Include="src\commands\ReactionRole\reactionrole.ts" />
     <TypeScriptCompile Include="src\config\api.ts" />
     <TypeScriptCompile Include="src\config\database.ts" />
+    <TypeScriptCompile Include="src\config\lava.ts" />
     <TypeScriptCompile Include="src\config\modals.ts" />
     <TypeScriptCompile Include="src\config\general.ts" />
     <TypeScriptCompile Include="src\config\index.ts" />
@@ -189,6 +191,7 @@ NODE_ENV=production</Environment>
     <TypeScriptCompile Include="src\services\ErrorHandler.ts" />
     <TypeScriptCompile Include="src\services\ImagesUpload.ts" />
     <TypeScriptCompile Include="src\services\index.ts" />
+    <TypeScriptCompile Include="src\services\Music.ts" />
     <TypeScriptCompile Include="src\services\ReactionRoles.ts" />
     <TypeScriptCompile Include="src\services\JointToCreate.ts">
       <SubType>Code</SubType>
