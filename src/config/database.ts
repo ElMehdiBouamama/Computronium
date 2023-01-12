@@ -1,4 +1,5 @@
 import { Options } from "@mikro-orm/core"
+
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter"
 
 export const databaseConfig: DatabaseConfigType = {
@@ -11,6 +12,7 @@ export const databaseConfig: DatabaseConfigType = {
         path: './database/backups/' // path to the backups folder (should be in the database/ folder)
     }
 }
+
 
 export const databaseType = 'better-sqlite' as const // 'better-sqlite' | 'sqlite' | 'postgres' | 'mysql' | 'mariadb' | 'mongo'
 

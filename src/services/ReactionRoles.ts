@@ -1,16 +1,44 @@
-import { singleton } from "tsyringe";
+import { singleton } from "tsyringe"
 
 import { Data } from "@entities";
-import { Database } from "@services";
-import { BaseReactionRole } from "@utils/classes";
-import { Collection } from "discord.js";
+import { Database } from "@services"
+import { BaseReactionRole } from "@utils/classes"
+import { Collection, Role } from "discord.js"
+const fs = require('fs')
+const createKDTree = require("static-kdtree")
+
+
 
 @singleton()
 export class ReactionRoleService {
 
-    constructor(
-        private db: Database
-    ) {
+    private emojis: string[];
+    private emojiKDTree: any;
+
+    constructor(private db: Database) {
+        this.load()
+    }
+
+    async load(){
+        try {
+            let data = await fs.promises.readFile("./src/config/emojis", 'utf8')
+            this.emojis = [...new Map<string, string>(Object.entries(JSON.parse(data))).keys()]
+            data = await fs.promises.readFile("./src/config/emojiKDTree", 'utf8')
+            this.emojiKDTree = createKDTree.deserialize(JSON.parse(data))
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+
+    getEmojiByRole(role: Role) {
+        role.color >>>= 0;
+        var b = role.color & 0xFF,
+            g = (role.color & 0xFF00) >>> 8,
+            r = (role.color & 0xFF0000) >>> 16,
+            roleColor = [r, g, b]
+        if (!this.emojis || !this.emojiKDTree) return ''
+        return this.emojis[this.emojiKDTree.nn(roleColor)]
     }
 
     /**
