@@ -22,9 +22,8 @@ export const Disabled: GuardFunction<
         if (arg instanceof CommandInteraction || arg instanceof SimpleCommandMessage) {
 
             const locale = getLocaleFromInteraction(arg),
-                  localizedReplyMessage = L[locale].GUARDS.DISABLED_COMMAND()
-    
-            await replyToInteraction(arg, localizedReplyMessage)
+                localizedReplyMessage = L[locale].GUARDS.DISABLED_COMMAND()
+            if (arg instanceof CommandInteraction) await replyToInteraction(arg, localizedReplyMessage)
         }
     }
 }

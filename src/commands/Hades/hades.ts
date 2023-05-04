@@ -53,28 +53,26 @@ export default class HadesStarCommand {
         
         await interaction.guild?.emojis.fetch()
 
-        let [list, chunkSize] = [techData.array, 25]
-        list = [...Array(Math.ceil(list.length / chunkSize))].map(_ => list.splice(0, chunkSize))
-
-        let embedArr: EmbedBuilder[] = []
-
-        list.forEach(async (el: any[]) => {
-
-            const embed = new EmbedBuilder()
-                .setColor(Colors.Blurple)
-
-            el.forEach(async (item: { type: string; level: { toString: () => any; }; }) => {
+        const chunkSize = 25;
+        const list = techData.array;
+        const embedArr: EmbedBuilder[] = [];
+        for (let i = 0; i < list.length; i += chunkSize) {
+            const chunk = list.slice(i, i + chunkSize);
+            const embed = new EmbedBuilder().setColor(Colors.Blurple);
+            for (const item of chunk) {
                 try {
-                    const emoji = client.emojis.cache.find(emoji => emoji.name == item.type)
-                    embed.addFields({ name: emoji?.identifier ? `<:${emoji?.identifier}>` : item.type, value: `${item.level.toString()}`, inline: true });
+                    const emoji = client.emojis.cache.find(emoji => emoji.name == item.type);
+                    embed.addFields({
+                        name: emoji?.identifier ? `<:${emoji.identifier}>` : item.type,
+                        value: `${item.level.toString()}`,
+                        inline: true
+                    });
                 } catch (error) {
-                    console.log(error)
+                    console.log(error);
                 }
-            })
-
-            embedArr.push(embed)
-        });
-
+            }
+            embedArr.push(embed);
+        }
         await interaction.followUp({ content: ' ', embeds: embedArr })
     }
 }

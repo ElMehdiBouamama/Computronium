@@ -2,10 +2,10 @@
 import { Category } from "@discordx/utilities";
 import { ReactionRoleService } from "@services";
 import { simpleErrorEmbed, simpleSuccessEmbed } from "@utils/functions";
-import { ApplicationCommandOptionType, Colors, CommandInteraction, EmbedBuilder, Message, Role, TextBasedChannel } from "discord.js";
+import { ApplicationCommandOptionType, Colors, CommandInteraction, EmbedBuilder, Message, Role, TextBasedChannel, TextChannel } from "discord.js";
 import { Client } from "discordx";
 import { injectable } from "tsyringe";
-import { BaseReactionRole } from "../../utils/classes";
+import { BaseReactionRole } from "@utils/classes";
 
 @Discord()
 @injectable()
@@ -47,12 +47,12 @@ export default class ReactionRoleCommand {
             type: ApplicationCommandOptionType.Channel,
             required: false,
         })
-        channel: TextBasedChannel | null,
+        channel: TextChannel | null,
         interaction: CommandInteraction,
         client: Client
     ): Promise<void> {
 
-        channel = channel ?? interaction.channel
+        channel = (channel ?? interaction.channel as TextChannel)
         await channel?.messages
             .fetch(messageId)
             .catch(async () => await simpleErrorEmbed(interaction, `Could not find the message ${messageId} in ${channel?.id}`))

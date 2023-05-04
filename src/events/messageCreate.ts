@@ -1,22 +1,28 @@
-import { ArgsOf, Client } from "discordx"
+﻿import { ArgsOf, Client } from "discordx"
 
 import { Discord, Guard, On } from "@decorators"
-import { Maintenance } from "@guards"
+import { NotBot } from "@guards"
 import { executeEvalFromMessage, isDev } from "@utils/functions"
 
 import { generalConfig } from "@config"
+import { MessageType, TextChannel } from "discord.js"
+import { injectable } from "tsyringe"
+import { LLM } from "../plugins/llm/services"
 
+@injectable()
 @Discord()
 export default class MessageCreateEvent {
 
+    constructor() { }
+
     @On("messageCreate")
     @Guard(
-        Maintenance
+        NotBot
     )
     async messageCreateHandler(
         [message]: ArgsOf<"messageCreate">, 
         client: Client
-     ) {
+     ): Promise<false | undefined> {
 
         // eval command
         if (
@@ -29,7 +35,14 @@ export default class MessageCreateEvent {
             executeEvalFromMessage(message)
         }
 
-        await client.executeCommand(message, { caseSensitive: false })
+        if (message.content.includes("@here") || message.content.includes("@everyone") || message.content.includes("〘💜Bots💜〙") || message.type == MessageType.Reply) return false;
+
+        if (client.user && message.mentions.has(client.user.id)) {
+            let answer = await LLM.exec(message.cleanContent);
+            (message.channel as TextChannel).send(answer)
+        }
+
+        await client.executeCommand(message, {caseSensitive: false, forcePrefixCheck: false, log: true})
     }
 
 }

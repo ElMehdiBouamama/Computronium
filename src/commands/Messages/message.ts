@@ -29,7 +29,7 @@ export default class MessageCommand {
         channel: TextBasedChannel | null,
         interaction: CommandInteraction
     ) {
-        channel = channel ?? interaction.channel
+        channel = (channel ?? interaction.channel) as TextChannel
 
         const msgs = await channel?.messages.fetch({ limit: count, before: interaction.id })
         if (msgs) {
@@ -37,7 +37,7 @@ export default class MessageCommand {
                 if (count < 2) {
                     await msgs.forEach(x => { x.delete() })
                 } else {
-                    (channel as TextChannel).bulkDelete(msgs)
+                    channel.bulkDelete(msgs)
 
                 }
             } catch (e) {

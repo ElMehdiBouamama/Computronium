@@ -5,7 +5,9 @@
     <Name>Bot</Name>
     <RootNamespace>Bot</RootNamespace>
     <Environment>TOKEN=MTA0Njc1MjIwMjIyNTYzMTI5NA.GPNQDW.49rN-YNZVD9fpQdtaWSWqISDnVcgXqQn41V1eQ
-NODE_ENV=production</Environment>
+NODE_ENV=production
+OPENAI_API_KEY=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
+SERPAPI_API_KEY=afa992ed7718ad082856bf49b73e1ad12bb814b83d466783e5916a2f496b0d07</Environment>
     <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
     <EnableTypeScript>true</EnableTypeScript>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
@@ -48,8 +50,8 @@ NODE_ENV=production</Environment>
     <Content Include="database\backups\.gitkeep" />
     <Content Include="database\migrations\.gitkeep" />
     <Content Include="docker-compose.yml" />
+    <Content Include="Lavalink.jar" />
     <Content Include="LICENSE" />
-    <Content Include="package-lock.json" />
     <Content Include="package.json">
       <SubType>Code</SubType>
     </Content>
@@ -61,6 +63,9 @@ NODE_ENV=production</Environment>
     <Content Include="src\plugins\.gitkeep" />
     <Content Include="src\config\emojis\emojis" />
     <Content Include="src\config\emojis\emojiKDTree" />
+    <Content Include="src\plugins\llm\.env" />
+    <Content Include="src\plugins\llm\package.json" />
+    <Content Include="src\plugins\llm\plugin.json" />
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +88,7 @@ NODE_ENV=production</Environment>
     <Folder Include="src\commands\Channel\" />
     <Folder Include="src\commands\Embed\" />
     <Folder Include="src\commands\JoinToCreate\" />
+    <Folder Include="src\commands\Hades\" />
     <Folder Include="src\commands\ReactionRole\" />
     <Folder Include="src\commands\Owner\" />
     <Folder Include="src\config\" />
@@ -95,6 +101,8 @@ NODE_ENV=production</Environment>
     <Folder Include="src\i18n\en\" />
     <Folder Include="src\i18n\fr\" />
     <Folder Include="src\plugins\" />
+    <Folder Include="src\plugins\llm\" />
+    <Folder Include="src\plugins\llm\services\" />
     <Folder Include="src\services\" />
     <Folder Include="src\utils\" />
     <Folder Include="src\utils\classes\" />
@@ -125,6 +133,9 @@ NODE_ENV=production</Environment>
     <TypeScriptCompile Include="src\commands\Embed\embed.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\commands\Hades\redstar.ts" />
+    <TypeScriptCompile Include="src\commands\Hades\whitestar.ts" />
+    <TypeScriptCompile Include="src\commands\Hades\hades.ts" />
     <TypeScriptCompile Include="src\commands\JoinToCreate\joinToCreate.ts" />
     <TypeScriptCompile Include="src\commands\Messages\message.ts">
       <SubType>Code</SubType>
@@ -144,10 +155,10 @@ NODE_ENV=production</Environment>
     <TypeScriptCompile Include="src\config\api.ts" />
     <TypeScriptCompile Include="src\config\database.ts" />
     <TypeScriptCompile Include="src\config\lava.ts" />
-    <TypeScriptCompile Include="src\config\modals.ts" />
     <TypeScriptCompile Include="src\config\general.ts" />
     <TypeScriptCompile Include="src\config\index.ts" />
     <TypeScriptCompile Include="src\config\logs.ts" />
+    <TypeScriptCompile Include="src\config\notdefered.ts" />
     <TypeScriptCompile Include="src\config\stats.ts" />
     <TypeScriptCompile Include="src\config\websocket.ts" />
     <TypeScriptCompile Include="src\entities\BaseEntity.ts" />
@@ -187,11 +198,14 @@ NODE_ENV=production</Environment>
     <TypeScriptCompile Include="src\i18n\i18n-util.ts" />
     <TypeScriptCompile Include="src\i18n\index.ts" />
     <TypeScriptCompile Include="src\main.ts" />
+    <TypeScriptCompile Include="src\plugins\llm\services\index.ts" />
+    <TypeScriptCompile Include="src\plugins\llm\services\llm.ts" />
     <TypeScriptCompile Include="src\services\Database.ts" />
     <TypeScriptCompile Include="src\services\ErrorHandler.ts" />
     <TypeScriptCompile Include="src\services\ImagesUpload.ts" />
     <TypeScriptCompile Include="src\services\index.ts" />
     <TypeScriptCompile Include="src\services\Music.ts" />
+    <TypeScriptCompile Include="src\services\Hades.ts" />
     <TypeScriptCompile Include="src\services\ReactionRoles.ts" />
     <TypeScriptCompile Include="src\services\JointToCreate.ts">
       <SubType>Code</SubType>
@@ -207,9 +221,11 @@ NODE_ENV=production</Environment>
     <TypeScriptCompile Include="src\services\Store.ts" />
     <TypeScriptCompile Include="src\services\WebSocket.ts" />
     <TypeScriptCompile Include="src\utils\classes\BaseController.ts" />
+    <TypeScriptCompile Include="src\utils\classes\BaseHSAPI.ts" />
     <TypeScriptCompile Include="src\utils\classes\BaseReactionRole.ts" />
     <TypeScriptCompile Include="src\utils\classes\BaseJoinToCreate.ts" />
     <TypeScriptCompile Include="src\utils\classes\BaseError.ts" />
+    <TypeScriptCompile Include="src\utils\classes\BaseTrackList.ts" />
     <TypeScriptCompile Include="src\utils\classes\index.ts" />
     <TypeScriptCompile Include="src\utils\classes\Plugin.ts" />
     <TypeScriptCompile Include="src\utils\decorators\ContextMenu.ts" />
@@ -253,10 +269,9 @@ NODE_ENV=production</Environment>
     <TypeScriptCompile Include="src\utils\types\database.d.ts" />
     <TypeScriptCompile Include="src\utils\types\environment.d.ts" />
     <TypeScriptCompile Include="src\utils\types\interactions.d.ts" />
+    <TypeScriptCompile Include="src\utils\types\lava.d.ts" />
     <TypeScriptCompile Include="src\utils\types\localization.d.ts" />
-    <TypeScriptCompile Include="src\utils\types\modals.d.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\utils\types\notdefered.d.ts" />
     <TypeScriptCompile Include="src\utils\types\state.d.ts" />
     <TypeScriptCompile Include="src\utils\types\stats.d.ts" />
     <TypeScriptCompile Include="src\utils\types\utils.d.ts" />

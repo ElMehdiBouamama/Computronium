@@ -1,22 +1,25 @@
-import { singleton } from 'tsyringe'
-import { OpenAI } from "langchain";
+import { OpenAI } from "langchain/llms/openai";
+import { singleton } from "tsyringe"
 
 @singleton()
 export class LLM {
-    private model: OpenAI;
-    private openai_key: string;
-    private serapi_key: string;
+
+    private static model: OpenAI;
 
     constructor() {
-        this.openai_key = process.env["OPENAI_API_KEY"] as string
-        this.serapi_key = process.env["SERPAPI_API_KEY"] as string
-        this.model = new OpenAI({ openAIApiKey: this.openai_key, temperature: 0.9 });
+        LLM.model = new OpenAI({ openAIApiKey: "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", temperature: 0.9 });
     }
 
-    public async process(message: string): Promise<string> {
-        const res = await this.model.call(
-            message
-        );
+    static async exec(query: string) {
+        console.log("LLM Execution: Started")
+        let res = ''
+        try {
+            res = await this.model.call(
+                "What would be a good company name a company that makes colorful socks?"
+            )
+        } catch (e: any) {
+            res = e.error;
+        }
         return res
     }
 }

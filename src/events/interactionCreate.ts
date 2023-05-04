@@ -7,7 +7,7 @@ import { Guild, User } from "@entities"
 import { Maintenance } from "@guards"
 import { Database, Logger, Stats } from "@services"
 import { resolveAction, syncUser } from "@utils/functions"
-import { modalConfig } from "../config"
+import { modalConfig, notDeferedConfig } from "../config"
 
 @Discord()
 @injectable()
@@ -29,8 +29,8 @@ export default class InteractionCreateEvent {
     ) {
         // defer the reply
         if (interaction instanceof CommandInteraction) {
-            const action = resolveAction(interaction);
-            if (!modalConfig.commands.exclude.includes(action)) {
+            const action = resolveAction(interaction)
+            if (!notDeferedConfig.commands.includes(action)) {
                 await interaction.deferReply()
             }
         }

@@ -1,10 +1,8 @@
 ﻿import { Discord, Slash, SlashGroup, SlashOption } from "@decorators";
 import { Category } from "@discordx/utilities";
-import { CommandInteraction, SelectMenuInteraction, StringSelectMenuBuilder } from "discord.js";
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, CommandInteraction, SelectMenuInteraction } from "discord.js";
 import { Client, SelectMenuComponent } from "discordx";
 import { injectable } from "tsyringe";
-import { simpleErrorEmbed, simpleSuccessEmbed } from "../../utils/functions";
 import { MusicHandler } from "./player";
 
 @Discord()
@@ -146,6 +144,7 @@ export class Music {
     ) {
         this.player.use(client, interaction)
         await this.player.clear()
+        await this.player.skip()
     }
 
     @SelectMenuComponent({ id: "playlist-menu" })

@@ -9,7 +9,7 @@ export const getFiles = (path: string): string[] => {
     if (!fs.existsSync(path)) return []
 
     const files = fs.readdirSync(path)
-    const fileList = []
+    const fileList: string[] = []
 
     for (const file of files) {
 

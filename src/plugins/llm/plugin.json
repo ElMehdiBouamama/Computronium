@@ -1,7 +1,7 @@
 {
   "author": "Computronium",
   "name": "LLM",
-  "version": "0.0.1",
-  "tscordRequiredVersion": ">=2.0.0",
-  "description": "Langchain integration"
+  "version": "1.0.0",
+  "tscordRequiredVersion": ">=2.0",
+  "description": "Get a new StarBoard to your discord server!"
 }

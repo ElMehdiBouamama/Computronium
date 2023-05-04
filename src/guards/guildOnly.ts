@@ -8,7 +8,7 @@ import { replyToInteraction } from "@utils/functions"
  * Prevent the command from running on DM
  */
 export const GuildOnly: GuardFunction<
-    | CommandInteraction 
+    | CommandInteraction
     | SimpleCommandMessage
 > = async (arg, client, next) => {
 
@@ -16,6 +16,6 @@ export const GuildOnly: GuardFunction<
 
     if (isInGuild) return next()
     else {
-        await replyToInteraction(arg, L[getLocaleFromInteraction(arg)].GUARDS.GUILD_ONLY())
+        if (arg instanceof CommandInteraction) await replyToInteraction(arg, L[getLocaleFromInteraction(arg)].GUARDS.GUILD_ONLY())
     }
 }

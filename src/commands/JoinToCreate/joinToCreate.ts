@@ -21,7 +21,6 @@ export default class ChannelCommand {
     @Slash({
         description: "Make an existing channel a Join To Create channel."
     })
-    @Guard()
     async create(
         @SlashOption({
             description: "Join To Create Channel",
@@ -58,19 +57,20 @@ export default class ChannelCommand {
         channel: VoiceBasedChannel,
         interaction: CommandInteraction
     ) {
-        if (interaction.guildId && channel.type == ChannelType.GuildVoice) {
-            const isDeleted = await this.jtcService.removeChannel(interaction.guildId, channel.id)
-            if (isDeleted) {
-                return await simpleSuccessEmbed(interaction, `<#${channel.id}> is now a normal channel!`)
-            } else {
-                return await simpleSuccessEmbed(interaction, `<#${channel.id}> is not a Join To Create channel!`)
-            }
+        if (!interaction.guildId) {
+            return await simpleErrorEmbed(interaction, 'This command is only available in Discord servers');
+        }
+
+        if (channel.type !== ChannelType.GuildVoice) {
+            return await simpleErrorEmbed(interaction, 'Channel must be a voice channel');
+        }
+
+        const isDeleted = await this.jtcService.removeChannel(interaction.guildId, channel.id);
+
+        if (isDeleted) {
+            return await simpleSuccessEmbed(interaction, `<#${channel.id}> is now a normal channel!`);
         } else {
-            if (channel.type != ChannelType.GuildVoice) {
-                return await simpleErrorEmbed(interaction, 'Channel must be a voice channel')
-            } else {
-                return await simpleErrorEmbed(interaction, 'This command is only available in discord servers')
-            }
+            return await simpleSuccessEmbed(interaction, `<#${channel.id}> is not a Join To Create channel!`);
         }
     }
 
@@ -82,14 +82,16 @@ export default class ChannelCommand {
         interaction: CommandInteraction,
         client: Client
     ) {
-        if (interaction.guildId) {
-            const guildChannel = await this.jtcService.getGuildChannels(interaction.guildId)
-            const channels = guildChannel.channelIds
-                .filter(channelId => interaction.guild?.channels.resolve(channelId) ? true : false)
-                .map(channelId => `<#${channelId}>`).join("\n")
-            return await simpleSuccessEmbed(interaction, `${channels ? channels : "No Join To Create channel found"}`)
-        } else {
-            return await simpleErrorEmbed(interaction, 'Interaction only available in discord servers')
+        if (!interaction.guildId) {
+            return await simpleErrorEmbed(interaction, 'Interaction only available in discord servers');
         }
+
+        const guildChannel = await this.jtcService.getGuildChannels(interaction.guildId);
+        const channels = guildChannel.channelIds
+            .filter(channelId => interaction.guild?.channels.resolve(channelId))
+            .map(channelId => `<#${channelId}>`).join('\n');
+
+        return await simpleSuccessEmbed(interaction, channels || 'No Join To Create channel found');
+
     }
 }

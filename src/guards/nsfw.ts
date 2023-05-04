@@ -19,6 +19,6 @@ export const NSFW: GuardFunction<
         const locale = getLocaleFromInteraction(arg),
               localizedReplyMessage = L[locale].GUARDS.NSFW()
 
-        await replyToInteraction(arg, localizedReplyMessage)
+        if(arg instanceof CommandInteraction) await replyToInteraction(arg, localizedReplyMessage)
     }
 }

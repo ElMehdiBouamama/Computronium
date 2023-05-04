@@ -1,9 +1,10 @@
-import { ArgsOf } from "discordx";
+import { ArgsOf, Guard } from "discordx";
 import { container, injectable } from "tsyringe";
 
 import { Discord, On } from "@decorators";
 import { JoinToCreate, voiceChannelMembersStore } from "@services";
 import { BaseJoinToCreate } from "@utils/classes";
+import { NotBot } from "@guards";
 
 @Discord()
 @injectable()
@@ -18,40 +19,37 @@ export default class JoinToCreateUpdateEvent {
     // =============================
 
     @On('voiceStateUpdate')
+    @Guard(NotBot)
     async voiceStateHandler(
         [leftState, joinedState]: ArgsOf<"voiceStateUpdate">
     ) {
-        // Get the Join To Create Data from the database as well as the voice channel members from the store
-        var jtcDB: BaseJoinToCreate = await this.jtcService.getGuildChannels(joinedState.guild.id)
-        const store = container.resolve(voiceChannelMembersStore)
+        const jtcDB: BaseJoinToCreate = await this.jtcService.getGuildChannels(joinedState.guild.id);
+        const store = container.resolve(voiceChannelMembersStore);
 
         if (joinedState.channel && joinedState.member) {
             const memberId = joinedState.member.id;
-            const channelId = joinedState.channel.id;
+            const channelId = joinedState.channelId;
+
             if (channelId && memberId) {
-                // Check if the joined voice channel is registered in the database
                 if (jtcDB.channelIds.includes(channelId)) {
-                    // Create a temporary channel
-                    const tempChannel = await joinedState.channel.clone({ name: `${joinedState.member?.displayName}'s Channel` })
-                    // Move the member to the new channel
-                    joinedState.member?.voice.setChannel(tempChannel)
-                    store.add(tempChannel.id, memberId)
+                    const tempChannel = await joinedState.channel.clone({ name: `${joinedState.member.displayName}'s Channel` });
+                    joinedState.member.voice.setChannel(tempChannel);
+                    store.add(tempChannel.id, memberId);
                 } else if (store.isTemp(channelId)) {
-                    // Check if the joined voice channel is a temp channel
-                    store.add(channelId, memberId)
+                    store.add(channelId, memberId);
                 }
             }
         }
 
         if (leftState.channel && leftState.member) {
-            const channelId = leftState.channel.id;
             const memberId = leftState.member.id;
-            // Check if a valid user left a temp channel
-            if (channelId && memberId && store.isTemp(channelId)) {
-                if (leftState.channel.members.size !== 0 && store.getMembers(channelId) == null) {
+            const channelId = leftState.channelId;
+
+            if (channelId && memberId && store.isTemp(channelId) && store.getMembers(channelId)?.has(memberId)) {
+                store.remove(channelId, memberId);
+                if (store.getMembers(channelId) == null) {
                     await leftState.channel.delete("Temp channel: Empty");
                 }
-                store.remove(channelId, memberId) 
             }
         }
     }

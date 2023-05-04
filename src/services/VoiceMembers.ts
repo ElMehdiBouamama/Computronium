@@ -2,11 +2,11 @@ import { Store as RxStore } from "rxeta"
 import { singleton } from "tsyringe"
 
 interface voiceChannelMembers {
-    voiceChannels: Map<string, Set<number>>
+    voiceChannels: Map<string, Set<string>>
 }
 
 const initVoiceChannelMembers: voiceChannelMembers = {
-    voiceChannels: new Map<string, Set<number>>()
+    voiceChannels: new Map<string, Set<string>>()
 }
 
 @singleton()
@@ -17,37 +17,37 @@ export class voiceChannelMembersStore extends RxStore<voiceChannelMembers> {
         //this.subscribe(x => console.log([...x.voiceChannels]));
     }
 
-    add(voiceChannel: string, member: string) {
+    add(voiceChannelId: string, member: string) {
         let voiceChannels = this.get("voiceChannels")
-        let members = this.getMembers(voiceChannel)
+        let members = this.getMembers(voiceChannelId)
         if (!members) {
-            members = new Set<number>()
+            members = new Set<string>()
         }
-        members.add(parseInt(member))
-        voiceChannels = voiceChannels.set(voiceChannel, members)
+        members.add(member)
+        voiceChannels = voiceChannels.set(voiceChannelId, members)
         this.update("voiceChannels", oldVoiceChannels => voiceChannels)
     }
 
-    remove(voiceChannel: string, member: string) {
+    remove(voiceChannelId: string, member: string) {
         let voiceChannels = this.get("voiceChannels")
-        let members = this.getMembers(voiceChannel)
+        let members = this.getMembers(voiceChannelId)
         if (members) {
             if (members.size <= 1) {
-                voiceChannels.delete(voiceChannel)
+                voiceChannels.delete(voiceChannelId)
             } else {
-                members.delete(parseInt(member))
-                voiceChannels = voiceChannels.set(voiceChannel, members)
+                members.delete(member)
+                voiceChannels = voiceChannels.set(voiceChannelId, members)
             }
         }
         this.update("voiceChannels", oldVoiceChannels => voiceChannels)
     }
 
-    getMembers(voiceChannel: string) {
+    getMembers(voiceChannelId: string) {
         const voiceChannels = this.get("voiceChannels")
-        return voiceChannels.get(voiceChannel)
+        return voiceChannels.get(voiceChannelId)
     }
 
     isTemp(voiceChannelId: string): boolean {
-        return this.get("voiceChannels").get(voiceChannelId) ? true:  false;
+        return this.getMembers(voiceChannelId) ? true: false;
     }
 }

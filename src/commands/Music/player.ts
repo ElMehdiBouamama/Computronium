@@ -49,6 +49,7 @@ export class MusicHandler extends PlayerWrapper {
     }
 
     private async validateCommand(
+        // Skips the verification process to see if the bot is in a voice channel or not, skips the verificiation to see if the requesting members is a voice channel or not
         skipBotChannel = false, skipMemberChannel = false
     ): Promise<
         | {
@@ -129,7 +130,7 @@ export class MusicHandler extends PlayerWrapper {
 
             queue.tracks.push(...tracks);
 
-            await queue.lavaPlayer.join(member.voice.channelId, { deaf: true })
+            await queue.lavaPlayer.join(member.voice.channelId, { deaf: false })
 
             queue.channel = channel
 
@@ -149,7 +150,7 @@ export class MusicHandler extends PlayerWrapper {
 
     async seek(seconds: number): Promise<void> {
 
-        const cmd = await this.validateCommand(false, false);
+        const cmd = await this.validateCommand();
         if (!cmd) {
             return
         }
@@ -193,7 +194,7 @@ export class MusicHandler extends PlayerWrapper {
     }
 
     async stop(): Promise<void> {
-        const cmd = await this.validateCommand(false, true)
+        const cmd = await this.validateCommand(true)
         if (!cmd) {
             return
         }

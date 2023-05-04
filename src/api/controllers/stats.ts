@@ -52,7 +52,7 @@ export class StatsController extends BaseController {
 
     @Get('/commands/usage')
     async commandsUsage(@QueryParams('numberOfDays') numberOfDays: number = 7) {
-        
+
         const commandsUsage = {
             slashCommands: await this.stats.countStatsPerDays('CHAT_INPUT_COMMAND_INTERACTION', numberOfDays),
             simpleCommands: await this.stats.countStatsPerDays('SIMPLE_COMMAND_MESSAGE', numberOfDays),
@@ -60,7 +60,7 @@ export class StatsController extends BaseController {
             messageContextMenus: await this.stats.countStatsPerDays('MESSAGE_CONTEXT_MENU_COMMAND_INTERACTION', numberOfDays),
         }
 
-        const body = []
+        const body: { date: string, slashCommands: number, simpleCommands: number, contextMenus: number }[] = []
         for (let i = 0; i < numberOfDays; i++) {
             body.push({
                 date: commandsUsage.slashCommands[i].date,
