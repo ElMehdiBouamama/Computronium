@@ -1,0 +1,3 @@
+type NotDeferedConfigType = {
+    commands: string[]
+}

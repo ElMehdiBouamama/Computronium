@@ -28,3 +28,7 @@ logs/
 .vs/
 bin/
 /Bot.njsproj.user
+/src
+/src/plugins/llm/.env
+/src/plugins/llm/package-lock.json
+/package-lock.json

@@ -1,0 +1,7 @@
+{
+  "author": "Computronium",
+  "name": "LLM",
+  "version": "0.0.1",
+  "tscordRequiredVersion": ">=2.0.0",
+  "description": "Langchain integration"
+}
