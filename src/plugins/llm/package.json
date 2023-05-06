@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "langchain": "^0.0.67"
+    "langchain": "^0.0.67",
+    "@huggingface/inference": "^1.5.1"
   }
 }
