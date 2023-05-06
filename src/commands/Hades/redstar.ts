@@ -1,30 +1,42 @@
-﻿import { Discord, Slash, SlashGroup, SlashOption } from "@decorators";
-import { Category } from "@discordx/utilities";
+import { RSQueueService } from "@services";
+import { simpleErrorEmbed, simpleSuccessEmbed } from "@utils/functions";
 import { ApplicationCommandOptionType, CommandInteraction } from "discord.js";
-import { simpleSuccessEmbed } from "../../utils/functions";
+import { Discord, Guard, Slash, SlashGroup, SlashOption } from "discordx";
+import { injectable } from "tsyringe";
+import { SlashChoice } from "@decorators";
+import { NotBot } from "@guards";
 
 @Discord()
-@Category('Hades Star')
+@injectable()
 @SlashGroup({ name: 'redstar', description: 'Red Stars Queuing system', root: 'hades' })
 @SlashGroup('redstar', 'hades')
-export default class WhiteStarCommand {
+export default class HadesRedStarCommand {
 
-    constructor() { }
+    constructor(private service: RSQueueService) {
+
+    }
 
     @Slash({
-        description: "Join a red star queue"
+        description: "Create a Red Star Queue"
     })
-    async join(
+    @Guard(
+        NotBot
+    )
+    async create(
+        @SlashChoice(4,5,6,7,8,9,10,11)
         @SlashOption({
-            description: "Red Star Level",
+            description: "The Red Star Level of the queue you want to join",
             name: "level",
-            type: ApplicationCommandOptionType.Number,
+            type: ApplicationCommandOptionType.Integer,
             required: true
         })
-        rsLevel: string,
+        rslevel: number,
         interaction: CommandInteraction
     ): Promise<void> {
-        // Queue System for red star
-        simpleSuccessEmbed(interaction, "@" + interaction.user.tag + " queued in rsLevel: " + rsLevel)
+        if (!rslevel || rslevel < 1 || rslevel > 11) return await simpleErrorEmbed(interaction, `Please enter a valid rslevel`)
+        const success = await this.service.createRSQueue(rslevel, interaction.user)
+        if (!success) return await simpleErrorEmbed(interaction, 'An error occured while adding your APIKey to the database')
+        return await simpleSuccessEmbed(interaction, `Red Star ${rslevel} Queue created!`)
     }
-} 
+
+}
