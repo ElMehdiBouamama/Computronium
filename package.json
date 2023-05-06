@@ -89,8 +89,7 @@
     "ts-toolbelt": "^9.6.0",
     "tsyringe": "~4.7.0",
     "typesafe-i18n": "^5.24.3",
-    "uuid": "~9.0.0",
-    "@huggingface/inference": "^1.8.0"
+    "uuid": "~9.0.0"
   },
   "devDependencies": {
     "@swc-node/register": "~1.6.5",
