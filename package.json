@@ -60,7 +60,7 @@
     "discord-api-types": "^0.37.41",
     "discord-logs": "~2.2.1",
     "discord-oauth2": "~2.10.1",
-    "discord.js": "~14.5.0",
+    "discord.js": "~14.11.0",
     "discordx": "~11.4.0",
     "dotenv": "~16.0.3",
     "express": "^4.18.2",
@@ -89,7 +89,8 @@
     "ts-toolbelt": "^9.6.0",
     "tsyringe": "~4.7.0",
     "typesafe-i18n": "^5.24.3",
-    "uuid": "~9.0.0"
+    "uuid": "~9.0.0",
+    "@huggingface/inference": "^1.8.0"
   },
   "devDependencies": {
     "@swc-node/register": "~1.6.5",
