@@ -3,6 +3,8 @@ import { singleton } from "tsyringe";
 import { Data } from "@entities";
 import { Database } from "@services";
 import { BaseHSAPI } from "@utils/classes";
+import { Colors, CommandInteraction, EmbedBuilder } from "discord.js";
+import { Client } from "discordx";
 import request from 'request';
 
 @singleton()
@@ -106,5 +108,32 @@ export class HadesService {
 
         await dataRepo.set('hsAPIKey', data)
         return success
+    }
+
+    async generateTechEmbeds(techData: any, client: Client, interaction: CommandInteraction): Promise<EmbedBuilder[]> {
+
+        await interaction.guild?.emojis.fetch()
+
+        const chunkSize = 25;
+        const list = techData.array;
+        const embedArr: EmbedBuilder[] = [];
+        for (let i = 0; i < list.length; i += chunkSize) {
+            const chunk = list.slice(i, i + chunkSize);
+            const embed = new EmbedBuilder().setColor(Colors.Blurple);
+            for (const item of chunk) {
+                try {
+                    const emoji = client.emojis.cache.find(emoji => emoji.name == item.type);
+                    embed.addFields({
+                        name: emoji?.identifier ? `<:${emoji.identifier}>` : item.type,
+                        value: `${item.level.toString()}`,
+                        inline: true
+                    });
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            embedArr.push(embed);
+        }
+        return embedArr;
     }
 }

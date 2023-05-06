@@ -50,29 +50,8 @@ export default class HadesStarCommand {
         const techData = await this.service.get(interaction.guildId, interaction.user.id)
         // This should be in a guard function
         if (!techData || techData.array.length == 0) return await simpleErrorEmbed(interaction, 'You have to link your hades compendium app first before proceeding, use %transferdata to link load your data')
-        
-        await interaction.guild?.emojis.fetch()
-
-        const chunkSize = 25;
-        const list = techData.array;
-        const embedArr: EmbedBuilder[] = [];
-        for (let i = 0; i < list.length; i += chunkSize) {
-            const chunk = list.slice(i, i + chunkSize);
-            const embed = new EmbedBuilder().setColor(Colors.Blurple);
-            for (const item of chunk) {
-                try {
-                    const emoji = client.emojis.cache.find(emoji => emoji.name == item.type);
-                    embed.addFields({
-                        name: emoji?.identifier ? `<:${emoji.identifier}>` : item.type,
-                        value: `${item.level.toString()}`,
-                        inline: true
-                    });
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-            embedArr.push(embed);
-        }
+        // Generate tech data aembeds from data retrieved from the hs compendium API
+        let embedArr = await this.service.generateTechEmbeds(techData, client, interaction);
         await interaction.followUp({ content: ' ', embeds: embedArr })
     }
 }
