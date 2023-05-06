@@ -1,25 +1,21 @@
-import { OpenAI } from "langchain/llms/openai";
+import { HuggingFaceInference } from "langchain/llms/hf";
 import { singleton } from "tsyringe"
 
 @singleton()
 export class LLM {
 
-    private static model: OpenAI;
+    private static model: HuggingFaceInference;
 
     constructor() {
-        LLM.model = new OpenAI({ openAIApiKey: "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", temperature: 0.9 });
+        LLM.model = new HuggingFaceInference({
+            model: "gpt2",
+            apiKey: "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", // In Node.js defaults to process.env.HUGGINGFACEHUB_API_KEY
+        });
     }
 
+
     static async exec(query: string) {
-        console.log("LLM Execution: Started")
-        let res = ''
-        try {
-            res = await this.model.call(
-                "What would be a good company name a company that makes colorful socks?"
-            )
-        } catch (e: any) {
-            res = e.error;
-        }
+        const res = await this.model.call(query)
         return res
     }
 }

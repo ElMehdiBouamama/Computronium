@@ -38,7 +38,7 @@ export default class MessageCreateEvent {
         if (message.content.includes("@here") || message.content.includes("@everyone") || message.content.includes("〘💜Bots💜〙") || message.type == MessageType.Reply) return false;
 
         if (client.user && message.mentions.has(client.user.id)) {
-            let answer = await LLM.exec(message.cleanContent);
+            let answer = await LLM.exec(message.cleanContent.slice(client.user.username.length + 2));
             (message.channel as TextChannel).send(answer)
         }
 
