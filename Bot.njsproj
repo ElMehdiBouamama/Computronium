@@ -167,6 +167,7 @@ SERPAPI_API_KEY=afa992ed7718ad082856bf49b73e1ad12bb814b83d466783e5916a2f496b0d07
     <TypeScriptCompile Include="src\entities\Image.ts" />
     <TypeScriptCompile Include="src\entities\index.ts" />
     <TypeScriptCompile Include="src\entities\Pastebin.ts" />
+    <TypeScriptCompile Include="src\entities\RedStar.ts" />
     <TypeScriptCompile Include="src\entities\Stat.ts" />
     <TypeScriptCompile Include="src\entities\User.ts" />
     <TypeScriptCompile Include="src\events\custom\MessageReactionEvents.ts" />
@@ -211,6 +212,7 @@ SERPAPI_API_KEY=afa992ed7718ad082856bf49b73e1ad12bb814b83d466783e5916a2f496b0d07
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\services\Logger.ts" />
+    <TypeScriptCompile Include="src\services\RSQueue.ts" />
     <TypeScriptCompile Include="src\services\VoiceMembers.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
