@@ -24,7 +24,7 @@ export class MusicQueue extends Queue {
         this.tracks.slice(0, 25).forEach(track => {
             fields.push({
                 name: `${++i}. ${(track).info.title}`,
-                value: track.info.uri,
+                value: track.info.uri ?? "No URL",
                 inline: false
             })
             return track

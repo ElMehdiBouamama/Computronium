@@ -1,6 +1,6 @@
 ﻿import { Discord, Slash, SlashGroup, SlashOption } from "@decorators";
 import { Category } from "@discordx/utilities";
-import { ApplicationCommandOptionType, CommandInteraction, SelectMenuInteraction } from "discord.js";
+import { ApplicationCommandOptionType, CommandInteraction, StringSelectMenuInteraction } from "discord.js";
 import { Client, SelectMenuComponent } from "discordx";
 import { injectable } from "tsyringe";
 import { MusicHandler } from "./player";
@@ -148,9 +148,10 @@ export class Music {
     }
 
     @SelectMenuComponent({ id: "playlist-menu" })
-    async handle(interaction: SelectMenuInteraction): Promise<unknown> {
+    async handle(interaction: StringSelectMenuInteraction): Promise<unknown> {
         // extract selected value by member
         const playlistName = interaction.values?.[0];
+        console.log(playlistName)
 
         // if value not found
         if (!playlistName) {
