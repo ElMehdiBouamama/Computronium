@@ -151,15 +151,15 @@ export class Music {
     async handle(interaction: StringSelectMenuInteraction): Promise<unknown> {
         // extract selected value by member
         const playlistName = interaction.values?.[0];
-        console.log(playlistName)
 
         // if value not found
         if (!playlistName) {
-            return interaction.followUp("invalid playlist name, select again");
+            return await interaction.followUp("invalid playlist name, select again!")
         }
 
         //await interaction.message.delete()
         await this.player.clear()
+        await simpleSuccessEmbed(interaction, `Playlist **${playlistName}** loaded successfully!`)
         await this.player.load(playlistName)
         return
     }

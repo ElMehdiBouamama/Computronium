@@ -66,12 +66,12 @@ export class MusicHandler extends PlayerWrapper {
             !this.interaction.guild ||
             !this.interaction.client.user
         ) {
-            await simpleErrorEmbed(this.interaction, `The command could not be processed. Please try again`)
+            await simpleErrorEmbed(this.interaction, `The command could not be processed. Please try again!`)
             return
         }
 
         if (!skipMemberChannel && !this.interaction.member.voice.channelId) {
-            await simpleErrorEmbed(this.interaction, `Join a voice channel first`)
+            await simpleErrorEmbed(this.interaction, `Join a voice channel first!`)
             return
         }
 
@@ -80,7 +80,7 @@ export class MusicHandler extends PlayerWrapper {
         );
 
         if (!bot) {
-            await simpleErrorEmbed(this.interaction, `Having difficulty finding my place in this world`)
+            await simpleErrorEmbed(this.interaction, `I only serve humans!`)
             return
         }
 
@@ -88,14 +88,14 @@ export class MusicHandler extends PlayerWrapper {
             !skipBotChannel &&
             this.interaction.member.voice.channelId !== bot.voice.channelId
         ) {
-            await simpleErrorEmbed(this.interaction, `I am already in a voice channel`)
+            await simpleErrorEmbed(this.interaction, `I am already in a voice channel!`)
             return
         }
 
         const queue = this.getQueue();
 
         if (!queue) {
-            await simpleErrorEmbed(this.interaction, `The player is not ready yet, please wait`)
+            await simpleErrorEmbed(this.interaction, `The player is not ready yet, please wait!`)
             return
         }
 
@@ -124,7 +124,7 @@ export class MusicHandler extends PlayerWrapper {
             const tracks = searchResponse.playlistInfo.name ? searchResponse.tracks : [searchResponse.tracks[0]]
 
             if (!tracks) {
-                await simpleErrorEmbed(this.interaction, `Couldn't find this song`)
+                await simpleErrorEmbed(this.interaction, `Couldn't find this song!`)
                 return
             }
 
@@ -158,12 +158,12 @@ export class MusicHandler extends PlayerWrapper {
         const { queue } = cmd;
 
         if (!queue.currentTrack) {
-            await simpleErrorEmbed(this.interaction, `There is no music currently playing`)
+            await simpleErrorEmbed(this.interaction, `There is no music currently playing!`)
             return
         }
 
         if (!queue.currentTrack.info.isSeekable) {
-            await simpleErrorEmbed(this.interaction, `This music can't be seeked`)
+            await simpleErrorEmbed(this.interaction, `This music can't be seeked!`)
             return
         }
 
@@ -174,7 +174,7 @@ export class MusicHandler extends PlayerWrapper {
         }
 
         queue.lavaPlayer.play(queue.currentTrack, { start: seconds * 1000 })
-        await simpleSuccessEmbed(this.interaction, `Current music time seeked`)
+        await simpleSuccessEmbed(this.interaction, `Current music time seeked!`)
         return
     }
 
@@ -203,7 +203,7 @@ export class MusicHandler extends PlayerWrapper {
             queue.stop()
         }
         await queue.lavaPlayer.leave()
-        return await simpleSuccessEmbed(this.interaction, `Stopped music`)
+        return await simpleSuccessEmbed(this.interaction, `Music stopped!`)
     }
 
     async pause(): Promise<void> {
@@ -214,9 +214,9 @@ export class MusicHandler extends PlayerWrapper {
         const { queue } = cmd
         if (queue.isPlaying) {
             queue.pause()
-            return await simpleSuccessEmbed(this.interaction, `Stopped music`)
+            return await simpleSuccessEmbed(this.interaction, `Music paused!`)
         }
-        return await simpleErrorEmbed(this.interaction, `No music is currently playing`)
+        return await simpleErrorEmbed(this.interaction, `No music is currently playing!`)
     }
 
     async resume(): Promise<void> {
@@ -227,9 +227,9 @@ export class MusicHandler extends PlayerWrapper {
         const { queue } = cmd
         if (!queue.isPlaying) {
             queue.resume()
-            return await simpleSuccessEmbed(this.interaction, `Resumed music`)
+            return await simpleSuccessEmbed(this.interaction, `Music resumed!`)
         }
-        return await simpleErrorEmbed(this.interaction, `No music is currently playing`)
+        return await simpleErrorEmbed(this.interaction, `No music is currently playing!`)
     }
 
     async shuffle(): Promise<void> {
@@ -268,7 +268,7 @@ export class MusicHandler extends PlayerWrapper {
     async save(name: string): Promise<void> {
         const cmd = await this.validateCommand(true, true)
         if (!cmd) {
-            await simpleErrorEmbed(this.interaction, `An error occured while saving the playlist`)
+            await simpleErrorEmbed(this.interaction, `An error occured while saving the playlist!`)
             return
         }
         const { queue, member } = cmd
@@ -276,7 +276,7 @@ export class MusicHandler extends PlayerWrapper {
         if (saved) {
             await simpleSuccessEmbed(this.interaction, `Playlist saved as **${name}**!`)
         } else {
-            await simpleErrorEmbed(this.interaction, `An error occured while saving the playlist`)
+            await simpleErrorEmbed(this.interaction, `An error occured while saving the playlist!`)
         }
         return
     }
@@ -288,12 +288,8 @@ export class MusicHandler extends PlayerWrapper {
         }
         const { queue, member } = cmd
         const loaded = await queue.load(name, member)
-        if (loaded) {
-            await this.view()
-        } else {
-            await simpleErrorEmbed(this.interaction, `An error occured while loading the playlist`)
-        }
-        return
+        if (!loaded) return await simpleErrorEmbed(this.interaction, `An error occured while loading the playlist!`)
+        return await this.view()
     }
 
     async delete(name: string): Promise<void> {
@@ -303,12 +299,8 @@ export class MusicHandler extends PlayerWrapper {
         }
         const { queue, member } = cmd
         const deleted = await queue.delete(name, member)
-        if (deleted) {
-            await simpleSuccessEmbed(this.interaction, `Playlist **${name}** deleted!`)
-        } else {
-            await simpleErrorEmbed(this.interaction, `An error occured while deleting the playlist`)
-        }
-        return
+        if (!deleted) return await simpleErrorEmbed(this.interaction, `An error occured while deleting the playlist!`)
+        return await simpleSuccessEmbed(this.interaction, `Playlist **${name}** deleted!`)
     }
 
     async displayPlaylists(): Promise<void> {
@@ -318,23 +310,24 @@ export class MusicHandler extends PlayerWrapper {
         }
         const { queue, member } = cmd
         const playlists = await queue.getPlaylists(member)
+        if (!playlists || playlists.length <= 0) return await simpleErrorEmbed(this.interaction, `You don't have any playlist saved you can queue up songs with /music play then save the playlist with /music save`)
         if (playlists && playlists?.length > 0) {
             const menu = new StringSelectMenuBuilder()
-                .addOptions(playlists.map(playlist => { return { label: playlist, value: playlist } }))
+                .addOptions(playlists.map(playlist => {
+                    return { label: playlist ?? "No name", value: playlist ?? "empty" }
+                }))
                 .setCustomId("playlist-menu")
-                .setPlaceholder("Select the playlist you want to load")
+                .setPlaceholder("Select the playlist you want to load!")
 
             // create a row for message actions
             const buttonRow = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(menu)
 
-            this.interaction.followUp({
+            this.interaction.reply({
+                ephemeral: true,
                 components: [buttonRow]
             })
         }
-        else {
-            simpleErrorEmbed(this.interaction, `You don't have any playlist saved you can queue up songs with /music play then save the playlist with /music save`)
-        }
-        return
+        return;
     }
 
     async view(): Promise<void> {
