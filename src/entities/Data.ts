@@ -1,6 +1,6 @@
 import { Entity, EntityRepositoryType, PrimaryKey, Property } from "@mikro-orm/core"
 import { EntityRepository } from "@mikro-orm/sqlite"
-import { BaseJoinToCreate, BaseReactionRole, BaseTrackList, BaseHSAPI } from "@utils/classes"
+import { BaseJoinToCreate, BaseReactionRole, BaseTrackList, BaseHSAPI, BaseRSConfig } from "@utils/classes"
 import { Collection } from "discord.js"
 import { CustomBaseEntity } from "./BaseEntity"
 
@@ -15,7 +15,8 @@ export const defaultData = {
     joinToCreate: [] as BaseJoinToCreate[],
     reactionRole: [] as BaseReactionRole[],
     trackList: [] as BaseTrackList[],
-    hsAPIKey: [] as BaseHSAPI[]
+    hsAPIKey: [] as BaseHSAPI[],
+    hsRSConfig: [] as BaseRSConfig[]
 }
 
 type DataType = keyof typeof defaultData

@@ -1,14 +1,14 @@
 ﻿import { Discord, Slash, SlashGroup, SlashOption } from "@decorators";
 import { Category } from "@discordx/utilities";
-import { ApplicationCommandOptionType, Colors, CommandInteraction, EmbedBuilder } from "discord.js";
+import { NotBot, UserPermissions } from "@guards";
+import { HadesService } from "@services";
+import { simpleErrorEmbed, simpleSuccessEmbed } from "@utils/functions";
+import { ApplicationCommandOptionType, CommandInteraction } from "discord.js";
 import { Client, Guard } from "discordx";
 import { injectable } from "tsyringe";
-import { NotBot, UserPermissions } from "../../guards";
-import { HadesService } from "../../services/Hades";
-import { simpleErrorEmbed, simpleSuccessEmbed } from "../../utils/functions";
 
-@Discord()
 @injectable()
+@Discord()
 @Category('Hades Star')
 @SlashGroup({ name: 'hades', description: 'Hades Star Commands' })
 @SlashGroup('hades')
@@ -31,7 +31,9 @@ export default class HadesStarCommand {
             required: true
         })
         APItoken: string,
-        interaction: CommandInteraction
+        interaction: CommandInteraction,
+        client: Client,
+        { localize }: InteractionData
     ): Promise<void> {
         if (!APItoken) return await simpleErrorEmbed(interaction, `Please enter a valid API Key`)
         const success = await this.service.add(interaction.guildId ?? "", APItoken)
@@ -44,7 +46,8 @@ export default class HadesStarCommand {
     })
     async tech(
         interaction: CommandInteraction,
-        client: Client
+        client: Client,
+        { localize }: InteractionData
     ): Promise<void> {
         if (!interaction.guildId) return await simpleErrorEmbed(interaction, `This command can only run inside a discord server`)
         const techData = await this.service.get(interaction.guildId, interaction.user.id)

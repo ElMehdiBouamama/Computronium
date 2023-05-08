@@ -1,6 +1,7 @@
-﻿import { Discord, Slash, SlashGroup, SlashOption } from "@decorators";
+﻿import { Discord, Slash, SlashGroup } from "@decorators";
 import { Category } from "@discordx/utilities";
-import { ApplicationCommandOptionType, CommandInteraction } from "discord.js";
+import { CommandInteraction } from "discord.js";
+import { Client } from "discordx";
 
 @Discord()
 @Category('Hades Star')
@@ -14,7 +15,9 @@ export default class WhiteStarCommand {
         description: "Signup to a white star"
     })
     async signup(
-        interaction: CommandInteraction
+        interaction: CommandInteraction,
+        client: Client,
+        { localize }: InteractionData
     ): Promise<void> {
 
     }
