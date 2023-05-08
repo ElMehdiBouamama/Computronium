@@ -15,7 +15,7 @@ export const logsConfig: LogsConfigType = {
         // exclude some interactions types
         exclude: [
             'BUTTON_INTERACTION', 
-            'SELECT_MENU_INTERACTION'
+            'STRING_SELECT_MENU_INTERACTION'
         ]
     },
 

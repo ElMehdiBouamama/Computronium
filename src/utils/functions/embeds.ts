@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, CommandInteraction, EmbedBuilder, MessageActionRowComponentBuilder, ModalSubmitInteraction, SelectMenuInteraction } from "discord.js"
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, CommandInteraction, EmbedBuilder, MessageActionRowComponentBuilder, ModalSubmitInteraction, StringSelectMenuInteraction } from "discord.js"
 
 import { replyToInteraction } from "@utils/functions"
 /**
@@ -6,7 +6,7 @@ import { replyToInteraction } from "@utils/functions"
  * @param interaction - discord interaction
  * @param message - message to log
  */
-export const simpleSuccessEmbed = async (interaction: CommandInteraction | ModalSubmitInteraction | SelectMenuInteraction, message: string) => {
+export const simpleSuccessEmbed = async (interaction: CommandInteraction | ModalSubmitInteraction | StringSelectMenuInteraction, message: string) => {
 
     const embed = new EmbedBuilder()
         .setColor(Colors.Green) // GREEN
@@ -21,7 +21,7 @@ export const simpleSuccessEmbed = async (interaction: CommandInteraction | Modal
  * @param interaction - discord interaction
  * @param message - message to log
  */
-export const simpleErrorEmbed = async (interaction: CommandInteraction | ModalSubmitInteraction | SelectMenuInteraction, message: string) => {
+export const simpleErrorEmbed = async (interaction: CommandInteraction | ModalSubmitInteraction | StringSelectMenuInteraction, message: string) => {
 
     const embed = new EmbedBuilder()
         .setColor(Colors.Red) // RED
@@ -38,7 +38,7 @@ export const simpleErrorEmbed = async (interaction: CommandInteraction | ModalSu
  * @param message - message to log
  * */
 
-export const simpleQuestionEmbed = async (interaction: CommandInteraction, message: string, labels: string[]) => {
+export const simpleQuestionEmbed = async (interaction: CommandInteraction | ModalSubmitInteraction | StringSelectMenuInteraction, message: string, labels: string[]) => {
 
     const embed = new EmbedBuilder()
         .setColor(Colors.Orange)

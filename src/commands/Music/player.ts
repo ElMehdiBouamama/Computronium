@@ -2,7 +2,7 @@ import { Status } from "@discordx/lava-player";
 import { Player } from "@discordx/lava-queue";
 import { Player as PlayerWrapper } from "@discordx/music";
 import { simpleErrorEmbed, simpleSuccessEmbed } from '@utils/functions';
-import { ActionRowBuilder, CommandInteraction, Guild, GuildMember, MessageActionRowComponentBuilder, SelectMenuInteraction, StringSelectMenuBuilder, TextBasedChannel } from "discord.js";
+import { ActionRowBuilder, CommandInteraction, Guild, GuildMember, MessageActionRowComponentBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction, TextBasedChannel } from "discord.js";
 import { Client } from "discordx";
 import { injectable, singleton } from "tsyringe";
 import { MusicService } from "../../services";
@@ -13,14 +13,14 @@ import { MusicQueue } from './queue';
 @injectable()
 export class MusicHandler extends PlayerWrapper {
     static players: Record<string, Player> = {} // botId with their respective players
-    private interaction: CommandInteraction | SelectMenuInteraction
+    private interaction: CommandInteraction | StringSelectMenuInteraction
     private client: Client
 
     constructor(private musicService: MusicService) {
         super()
     }
 
-    use(client: Client, interaction: CommandInteraction | SelectMenuInteraction) {
+    use(client: Client, interaction: CommandInteraction | StringSelectMenuInteraction) {
         this.interaction = interaction
         this.client = client
         // Check if lava player exist for the bot if it doesn't create a lavalink player with default parameters
