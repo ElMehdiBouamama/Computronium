@@ -149,8 +149,7 @@ export default class HelpCommand {
 
 	loadCategories(): void {
 
-		const commands: CommandCategory[] = MetadataStorage.instance.applicationCommandSlashes as CommandCategory[]
-		
+        const commands: CommandCategory[] = MetadataStorage.instance.applicationCommandSlashesFlat as CommandCategory[]
 		for (const command of commands) {
 
 			const { category } = command
