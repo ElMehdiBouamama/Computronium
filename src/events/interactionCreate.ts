@@ -1,4 +1,4 @@
-import { CommandInteraction } from "discord.js"
+import { ButtonInteraction, CommandInteraction, StringSelectMenuInteraction } from "discord.js"
 import { ArgsOf, Client } from "discordx"
 import { injectable } from "tsyringe"
 
@@ -7,7 +7,7 @@ import { Guild, User } from "@entities"
 import { Maintenance } from "@guards"
 import { Database, Logger, Stats } from "@services"
 import { resolveAction, syncUser } from "@utils/functions"
-import { notDeferedConfig } from "../config"
+import { notDeferedConfig } from "@config"
 
 @Discord()
 @injectable()

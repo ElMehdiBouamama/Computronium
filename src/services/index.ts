@@ -13,3 +13,5 @@ export * from './VoiceMembers'
 export * from './ReactionRoles'
 export * from './Music'
 export * from './RSQueue'
+export * from './RedStar'
+export * from "./Hades"
