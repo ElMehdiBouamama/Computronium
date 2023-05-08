@@ -4,7 +4,7 @@ import { simpleErrorEmbed, simpleSuccessEmbed } from "@utils/functions"
 import { ApplicationCommandOptionType, CommandInteraction, TextBasedChannel, TextChannel } from "discord.js"
 
 @Discord()
-@Category('Messages')
+@Category('Channels & Messages')
 @SlashGroup({ name: 'messages', description: 'Manage messages in channels' })
 @SlashGroup('messages')
 export default class MessageCommand {

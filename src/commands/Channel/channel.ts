@@ -3,12 +3,11 @@ import { ApplicationCommandOptionType, Colors, CommandInteraction, EmbedBuilder,
 import { ButtonComponent } from "discordx"
 
 import { Discord, Slash, SlashGroup, SlashOption } from "@decorators"
-import { Guard } from "@guards"
 import { simpleQuestionEmbed, simpleSuccessEmbed } from "@utils/functions"
 
 @Discord()
-@Category('Channels')
-@SlashGroup({ name: 'channel', description: 'Manage channel' })
+@Category('Channels & Messages')
+@SlashGroup({ name: 'channel', description: 'Manage channels' })
 @SlashGroup('channel')
 export default class ChannelCommand {
 
@@ -20,7 +19,6 @@ export default class ChannelCommand {
     @Slash({
         description: "Clear all messages from the specified channel"
     })
-    @Guard()
     async clear(
         @SlashOption({
             description: "channel to clear",

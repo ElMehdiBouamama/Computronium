@@ -7,7 +7,7 @@ import { SlashChoice } from "@decorators";
 import { NotBot } from "@guards";
 
 @Discord()
-@injectable()
+@Category("Hades Star")
 @SlashGroup({ name: 'redstar', description: 'Red Stars Queuing system', root: 'hades' })
 @SlashGroup('redstar', 'hades')
 export default class HadesRedStarCommand {

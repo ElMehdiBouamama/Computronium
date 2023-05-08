@@ -14,10 +14,10 @@ import {
     TextInputBuilder,
     TextInputStyle
 } from "discord.js";
-import { Client, ModalComponent } from "discordx";
+import { ModalComponent } from "discordx";
 
 @Discord()
-@Category('Embeds')
+@Category('Channels & Messages')
 @SlashGroup({ name: 'embed', description: 'Manage embeds in channels', root: 'messages' })
 @SlashGroup('embed', 'messages')
 export default class EmbedCommand {

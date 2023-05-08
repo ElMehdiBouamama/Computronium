@@ -9,7 +9,7 @@ import { BaseReactionRole } from "@utils/classes";
 
 @Discord()
 @injectable()
-@Category('Reaction Role')
+@Category('Channels & Messages')
 @SlashGroup({ name: 'reactionrole', description: 'Manage reaction roles of messages' })
 @SlashGroup('reactionrole')
 export default class ReactionRoleCommand {
@@ -95,7 +95,7 @@ export default class ReactionRoleCommand {
                                         (role, emoji) => `${decodeURIComponent(emoji).includes(':') ? `<:${decodeURIComponent(emoji)}>` : decodeURIComponent(emoji)}  => <@&${role}>`).join("\n")}`)
                                     .join('\n\n'),
                             inline: true
-                        }): '')
+                        }) : '')
                 } catch (e) {
                 }
             }

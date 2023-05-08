@@ -10,7 +10,7 @@ import { injectable } from "tsyringe"
 
 @injectable()
 @Discord()
-@Category('Channels')
+@Category('Channels & Messages')
 @SlashGroup({ name: 'jointocreate', description: 'Create temporary voice channels' })
 @SlashGroup('jointocreate')
 export default class ChannelCommand {

@@ -2,10 +2,12 @@ import { ApplicationCommandOptionType, CommandInteraction } from "discord.js"
 import { Client } from "discordx"
 
 import { Discord, Guard, Slash, SlashOption } from "@decorators"
+import { Category } from "@discordx/utilities"
 import { Disabled } from "@guards"
 import { setMaintenance, simpleSuccessEmbed } from "@utils/functions"
 
 @Discord()
+@Category('Admin')
 export default class MaintenanceCommand {
 
 	@Slash({ 
