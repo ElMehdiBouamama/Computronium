@@ -3,6 +3,7 @@ import { Category } from "@discordx/utilities";
 import { ApplicationCommandOptionType, CommandInteraction, StringSelectMenuInteraction } from "discord.js";
 import { Client, SelectMenuComponent } from "discordx";
 import { injectable } from "tsyringe";
+import { simpleSuccessEmbed } from "@utils/functions";
 import { MusicHandler } from "./player";
 
 @Discord()
@@ -23,7 +24,8 @@ export class Music {
         })
         query: string,
         interaction: CommandInteraction,
-        client: Client
+        client: Client,
+        { localize }: InteractionData
     ): Promise<void> {
         this.player.use(client, interaction)
         await this.player.play(query)
@@ -39,50 +41,79 @@ export class Music {
         })
         seconds: number,
         interaction: CommandInteraction,
-        client: Client
+        client: Client,
+        { localize }: InteractionData
     ): Promise<void> {
         this.player.use(client, interaction)
         await this.player.seek(seconds)
     }
 
     @Slash({ description: "Skip the currently playing music" })
-    async skip(interaction: CommandInteraction, client: Client) {
+    async skip(
+        interaction: CommandInteraction,
+        client: Client,
+        { localize }: InteractionData
+    ) {
         this.player.use(client, interaction)
         await this.player.skip()
     }
 
     @Slash({ description: "Stop the currently playing music" })
-    async stop(interaction: CommandInteraction, client: Client) {
+    async stop(
+        interaction: CommandInteraction,
+        client: Client,
+        { localize }: InteractionData
+    ) {
         this.player.use(client, interaction)
         await this.player.stop()
     }
 
     @Slash({ description: "Pause the currently playing music" })
-    async pause(interaction: CommandInteraction, client: Client) {
+    async pause(
+        interaction: CommandInteraction,
+        client: Client,
+        { localize }: InteractionData
+    ) {
         this.player.use(client, interaction)
         await this.player.pause()
     }
 
     @Slash({ description: "Resume playing music" })
-    async resume(interaction: CommandInteraction, client: Client) {
+    async resume(
+        interaction: CommandInteraction,
+        client: Client,
+        { localize }: InteractionData
+    ) {
         this.player.use(client, interaction)
         await this.player.resume()
     }
 
     @Slash({ description: "Shuffle music in the currently playing queue" })
-    async shuffle(interaction: CommandInteraction, client: Client) {
+    async shuffle(
+        interaction: CommandInteraction,
+        client: Client,
+        { localize }: InteractionData
+    ) {
         this.player.use(client, interaction)
         await this.player.shuffle()
     }
 
     @Slash({ description: "Loop the entire queue" })
-    async loop(interaction: CommandInteraction, client: Client) {
+    async loop(
+        interaction: CommandInteraction,
+        client: Client,
+        { localize }: InteractionData
+    ) {
         this.player.use(client, interaction)
         await this.player.loop()
     }
 
     @Slash({ description: "repeat currently playing music" })
-    async repeat(interaction: CommandInteraction, client: Client) {
+    async repeat(
+        interaction: CommandInteraction,
+        client: Client,
+        { localize }: InteractionData
+    ) {
         this.player.use(client, interaction)
         await this.player.repeat()
     }
@@ -97,7 +128,8 @@ export class Music {
         })
         name: string,
         interaction: CommandInteraction,
-        client: Client
+        client: Client,
+        { localize }: InteractionData
     ) {
         this.player.use(client, interaction)
         await this.player.save(name)
@@ -106,7 +138,8 @@ export class Music {
     @Slash({ description: "Load a saved playlist" })
     async load(
         interaction: CommandInteraction,
-        client: Client
+        client: Client,
+        { localize }: InteractionData
     ) {
         this.player.use(client, interaction)
         await this.player.displayPlaylists()
@@ -122,7 +155,8 @@ export class Music {
         })
         name: string,
         interaction: CommandInteraction,
-        client: Client
+        client: Client,
+        { localize }: InteractionData
     ) {
         this.player.use(client, interaction)
         await this.player.delete(name)
@@ -131,7 +165,8 @@ export class Music {
     @Slash({ description: "Show the currently playing music" })
     async playing(
         interaction: CommandInteraction,
-        client: Client
+        client: Client,
+        { localize }: InteractionData
     ) {
         this.player.use(client, interaction)
         await this.player.view()
@@ -140,7 +175,8 @@ export class Music {
     @Slash({ description: "Show the currently playing music" })
     async clear(
         interaction: CommandInteraction,
-        client: Client
+        client: Client,
+        { localize }: InteractionData
     ) {
         this.player.use(client, interaction)
         await this.player.clear()
