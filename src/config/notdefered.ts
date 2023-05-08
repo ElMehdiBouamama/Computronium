@@ -1,5 +1,6 @@
 export const notDeferedConfig: NotDeferedConfigType = {
     commands: [
-        'messages embed create'
+        'messages embed create',
+        'music load'
     ]
 }

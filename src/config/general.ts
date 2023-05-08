@@ -12,9 +12,9 @@ export const generalConfig: GeneralConfigType = {
 
 	// useful links
 	links: {
-		invite: 'https://discord.com/api/oauth2/authorize?client_id=1048576181978542111&permissions=8&scope=bot',
+		invite: `https://discord.com/api/oauth2/authorize?client_id=${process.env["BOT_APP_ID"]}&permissions=8&scope=bot`,
 		supportServer: 'https://discord.gg/5zdYh8D28n',
-		gitRemoteRepo: 'https://github.com/barthofu/tscord',
+		gitRemoteRepo: 'https://github.com/ElMehdiBouamama/Computronium',
 	},
 	
 	automaticUploadImagesToImgur: false, // enable or not the automatic assets upload
@@ -22,7 +22,7 @@ export const generalConfig: GeneralConfigType = {
 	devs: [], // discord IDs of the devs that are working on the bot (you don't have to put the owner's id here)
 
 	eval: {
-		name: 'bot', // name to trigger the eval command
+		name: 'eval', // name to trigger the eval command
 		onlyOwner: true // restrict the eval command to the owner only (if not, all the devs can trigger it)
 	},
 

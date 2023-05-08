@@ -7,7 +7,7 @@ import { Client, DIService, tsyringeDependencyRegistryEngine } from "discordx"
 import { container } from "tsyringe"
 
 import { Server } from "@api/server"
-import { apiConfig, generalConfig, websocketConfig } from "@config"
+import { apiConfig, generalConfig, logsConfig, websocketConfig } from "@config"
 import { NoBotTokenError } from "@errors"
 import { Database, ErrorHandler, ImagesUpload, Logger, PluginsManager, WebSocket } from "@services"
 import { initDataTable, resolveDependency } from "@utils/functions"
@@ -41,7 +41,7 @@ async function run() {
     const client = new Client(clientConfig)
 
     // Load all new events
-    discordLogs(client, { debug: false })
+    discordLogs(client, { debug: logsConfig.debug })
     container.registerInstance(Client, client)
 
     // import all the commands and events
