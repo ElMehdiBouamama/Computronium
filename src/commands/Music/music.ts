@@ -193,10 +193,9 @@ export class Music {
             return await interaction.followUp("invalid playlist name, select again!")
         }
 
-        //await interaction.message.delete()
         await this.player.clear()
-        await simpleSuccessEmbed(interaction, `Playlist **${playlistName}** loaded successfully!`)
         await this.player.load(playlistName)
+        await simpleSuccessEmbed(interaction, `Playlist **${playlistName}** loaded successfuly!`)
         return
     }
 }
