@@ -111,15 +111,16 @@ export class HadesService {
     }
 
     async generateTechEmbeds(techData: any, client: Client, interaction: CommandInteraction): Promise<EmbedBuilder[]> {
-
         await interaction.guild?.emojis.fetch()
-
         const chunkSize = 25;
         const list = techData.array;
         const embedArr: EmbedBuilder[] = [];
         for (let i = 0; i < list.length; i += chunkSize) {
             const chunk = list.slice(i, i + chunkSize);
-            const embed = new EmbedBuilder().setColor(Colors.Blurple);
+            const embed = new EmbedBuilder()
+                .setColor(Colors.Blurple)
+                .setAuthor({ name: interaction.user.tag, iconURL:  interaction.user.avatarURL() ?? interaction.user.defaultAvatarURL})
+                .setTitle("Tech Tree");
             for (const item of chunk) {
                 try {
                     const emoji = client.emojis.cache.find(emoji => emoji.name == item.type);
