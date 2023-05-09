@@ -4,7 +4,7 @@ import { Category } from "@discordx/utilities";
 import { NotBot, UserPermissions } from "@guards";
 import { HadesService } from "@services";
 import { simpleErrorEmbed, simpleSuccessEmbed } from "@utils/functions";
-import { ApplicationCommandOptionType, BaseMessageOptions, CommandInteraction, Embed } from "discord.js";
+import { ApplicationCommandOptionType, CommandInteraction } from "discord.js";
 import { Client, Guard } from "discordx";
 import { injectable } from "tsyringe";
 
