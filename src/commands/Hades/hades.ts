@@ -96,14 +96,14 @@ export default class HadesStarCommand {
             type: ApplicationCommandOptionType.User,
             required: false
         })
-        user: User,
+        user: GuildMember,
         interaction: CommandInteraction,
         client: Client,
         { localize }: InteractionData
     ) {
         if (!interaction.channel || !interaction.channel.isTextBased()) return await simpleErrorEmbed(interaction, "This command can only be executed in a text based channels")
         if (!interaction.guildId) return await simpleErrorEmbed(interaction, `This command can only run inside a discord server`)
-        let targetUser = user ?? interaction.user
+        let targetUser = user ?? interaction.member
 
         // Use the helpful Attachment class structure to process the file for you
         const techData = await this.service.get(interaction.guildId ?? "undefined", targetUser.id);
