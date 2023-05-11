@@ -31,3 +31,5 @@ bin/
 /src/plugins/llm/.env
 /src/plugins/llm/package-lock.json
 /package-lock.json
+/assets/PSD/tech_background_unmodified.psd
+/assets/PSD/tech_background.psd
