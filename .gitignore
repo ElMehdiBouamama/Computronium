@@ -1,0 +1,37 @@
+# npm
+node_modules/
+package-lock.json
+
+# secrets
+.env
+.env.local
+imgur_cred.txt
+EC2_KeyPair_Src.pem
+Bot.njsproj
+
+# build
+build/
+
+# db
+*.sqlite
+objects/
+snapshot*.txt
+/data/
+
+# logs
+logs/
+*.log
+
+# other
+tests/
+obj/
+logs/
+.vs/
+bin/
+/Bot.njsproj.user
+/src/plugins/llm/.env
+/src/plugins/llm/package-lock.json
+/package-lock.json
+/assets/PSD/tech_background_unmodified.psd
+/assets/PSD/tech_background.psd
+/Bot.njsproj

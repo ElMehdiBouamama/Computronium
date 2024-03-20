@@ -1,0 +1,7 @@
+{
+  "author": "Computronium",
+  "name": "LLM",
+  "version": "1.0.0",
+  "tscordRequiredVersion": ">=2.0",
+  "description": "Get a new StarBoard to your discord server!"
+}
